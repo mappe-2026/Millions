@@ -2,11 +2,25 @@ package edu.ntnu.idatt2003.gruppe50;
 
 import java.math.BigDecimal;
 
+/**
+ * Represents a holding of a specific stock.
+ * <br>
+ * A share consist of a stock, the quantity owned
+ * and the purchase price per unit.
+ */
 public class Share {
     private final Stock stock;
     private final BigDecimal quantity;
     private final BigDecimal purchasePrice;
 
+    /**
+     *Creates a new {@code Share} with the given stock, quantity and purchase price.
+     *
+     * @param stock the stock that is owned
+     * @param quantity the number of units owned
+     * @param purchasePrice the purchase price per unit
+     * @throws IllegalArgumentException if any argument is null, zero or negative.
+     */
     public Share(Stock stock, BigDecimal quantity, BigDecimal purchasePrice) {
         if (stock == null) {
             throw new IllegalArgumentException("Stock cannot be null");
@@ -23,14 +37,29 @@ public class Share {
         this.purchasePrice = purchasePrice;
     }
 
+    /**
+     * Returns the stock associated with this share.
+     *
+     * @return the stock
+     */
     public Stock getStock() {
         return stock;
     }
 
+    /**
+     * Returns the quantity owned of this stock.
+     *
+     * @return quantity
+     */
     public BigDecimal getQuantity() {
         return quantity;
     }
 
+    /**
+     * Returns the purchase price per unit for this stock
+     *
+     * @return purchase price
+     */
     public BigDecimal getPurchasePrice() {
         return purchasePrice;
     }
