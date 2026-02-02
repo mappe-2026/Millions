@@ -12,10 +12,10 @@ public class Share {
             throw new IllegalArgumentException("Stock cannot be null");
         }
         if (quantity == null || quantity.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Quantity must be positive");
+            throw new IllegalArgumentException("Quantity cannot be null and must be positive");
         }
         if (purchasePrice == null || purchasePrice.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Purchase price must be positive");
+            throw new IllegalArgumentException("Purchase price cannot be null and must be positive");
         }
 
         this.stock = stock;
