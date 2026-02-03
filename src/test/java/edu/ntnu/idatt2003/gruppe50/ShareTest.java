@@ -22,13 +22,13 @@ class ShareTest {
         Stock stock = new Stock("AAPL", "Apple", new BigDecimal("265"));
         Share share = new Share(stock, new BigDecimal("3"), new BigDecimal("250"));
 
-        assertEquals(stock.getSymbol(), share.getStock().getSymbol());
+        assertEquals(stock, share.getStock());
         assertEquals(new BigDecimal("3"), share.getQuantity());
         assertEquals(new BigDecimal("250"), share.getPurchasePrice());
     }
 
     @Test
-    void constructor_nullShare_throwsIllegalArgumentException() {
+    void constructor_nullStock_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new Share(null,
                 new BigDecimal("10"), new BigDecimal("6")));
     }
@@ -46,6 +46,12 @@ class ShareTest {
     }
 
     @Test
+    void constructor_zeroQuantity_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Share(stock, BigDecimal.ZERO, new BigDecimal("20")));
+    }
+
+    @Test
     void constructor_negativePurchasePrice_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> new Share(stock, new BigDecimal("7"), new BigDecimal("-1")));
@@ -55,6 +61,12 @@ class ShareTest {
     void constructor_nullPurchasePrice_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 () -> new Share(stock, new BigDecimal("7"), null));
+    }
+
+    @Test
+    void constructor_zeroPurchasePrice_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Share(stock, new BigDecimal("7"), BigDecimal.ZERO));
     }
 
     @Test
@@ -71,6 +83,4 @@ class ShareTest {
     void getPurchasePrice_returnsPurchasePrice() {
         assertEquals(new BigDecimal("310"), share.getPurchasePrice());
     }
-
-
 }
