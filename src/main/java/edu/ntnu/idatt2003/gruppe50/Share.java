@@ -14,7 +14,7 @@ public class Share {
     private final BigDecimal purchasePrice;
 
     /**
-     *Creates a new {@code Share} with the given stock, quantity and purchase price.
+     * Creates a new {@code Share} with the given stock, quantity and purchase price.
      *
      * @param stock the stock that is owned
      * @param quantity the number of units owned
