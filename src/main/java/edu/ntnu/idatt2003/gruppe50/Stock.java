@@ -70,7 +70,7 @@ public class Stock {
      * Adds a new sales price to the stock.
      *
      * @param salesPrice the new sales price
-     * @throws IllegalArgumentException if the price is null, zero og negative
+     * @throws IllegalArgumentException if the price is null, zero or negative
      */
     public void addNewSalesPrice(BigDecimal salesPrice) {
         if (salesPrice == null || salesPrice.compareTo(BigDecimal.ZERO) <= 0) {
