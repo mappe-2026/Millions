@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * Represents a holding of a specific stock.
  * <br>
- * A share consist of a stock, the quantity owned
+ * A share consists of a stock, the quantity owned
  * and the purchase price per unit.
  */
 public class Share {
