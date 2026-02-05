@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2003.gruppe50;
+package edu.ntnu.idatt2003.gruppe50.model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ public class Stock {
      * @throws IllegalArgumentException if any argument is invalid
      */
     public Stock(String symbol, String company, BigDecimal salesPrice) {
-        if (symbol == null || symbol.isBlank()) {
-            throw new IllegalArgumentException("Symbol cannot be null or blank");
-        }
+            if (symbol == null || symbol.isBlank()) {
+                throw new IllegalArgumentException("Symbol cannot be null or blank");
+            }
         if (company == null || company.isBlank()) {
             throw new IllegalArgumentException("Company cannot be null or blank");
         }
