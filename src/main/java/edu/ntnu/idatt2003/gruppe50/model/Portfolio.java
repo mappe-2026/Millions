@@ -73,13 +73,18 @@ public class Portfolio {
     }
 
     /**
-     * Checks whether the portfolio contains the given share
+     * Checks whether the portfolio contains at least
+     * one share with the same stock as the given
+     * share
      *
      * @param shareToCheck the share to check for
      * @return {@code true} if the portfolio contains the share,
      *         {@code false} otherwise
      */
     public boolean contains(Share shareToCheck) {
+        if (shareToCheck == null) {
+            throw new IllegalArgumentException("The share used for searching cant be null");
+        }
         return shares.stream()
                 .anyMatch(share ->
                         share.getStock().equals(shareToCheck.getStock()));
