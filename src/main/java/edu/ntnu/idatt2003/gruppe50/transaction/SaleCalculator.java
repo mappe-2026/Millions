@@ -16,12 +16,23 @@ public class SaleCalculator implements TransactionCalculator {
     /**
      * Creates a calculator for the sale of a specific
      * share which can calculate the belonging fees.
+     * <p>
+     *     Validates that the share is not {@code null}
+     *     or that the sales price is less than 0.
+     *     If it is an {@link IllegalArgumentException} is thrown.
+     * </p>
      *
      * @param share the share being sold, the purchase price and
      *              quantity is used to determine profit.
      * @param salesPrice the price the share is sold at.
      */
     public SaleCalculator(Share share, BigDecimal salesPrice) {
+        if (share == null) {
+            throw new IllegalArgumentException("Share cannot be null");
+        }
+        if (salesPrice.compareTo(BigDecimal.valueOf(0)) < 0) {
+            throw new IllegalArgumentException("Sales price cannot be less than zero");
+        }
 
         purchasePrice = share.getPurchasePrice();
         this.salesPrice = salesPrice;
