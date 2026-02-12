@@ -15,7 +15,7 @@ public class PurchaseCalculator implements TransactionCalculator {
      * Creates a calculator for determining the price of a share.
      * <p>
      *     Validates that the share is not {@code null}.
-     *     If it is an {@link IllegalArgumentException} is thrown.
+     *     If null an {@link IllegalArgumentException} is thrown.
      * </p>
      *
      * @param share being purchased, the quantity and
