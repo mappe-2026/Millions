@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2003.gruppe50;
+package edu.ntnu.idatt2003.gruppe50.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

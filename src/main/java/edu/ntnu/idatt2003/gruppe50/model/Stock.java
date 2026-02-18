@@ -1,4 +1,4 @@
-package edu.ntnu.idatt2003.gruppe50;
+package edu.ntnu.idatt2003.gruppe50.model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
