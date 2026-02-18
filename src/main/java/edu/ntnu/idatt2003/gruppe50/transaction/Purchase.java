@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.gruppe50.transaction;
 
+import edu.ntnu.idatt2003.gruppe50.calculator.PurchaseCalculator;
 import edu.ntnu.idatt2003.gruppe50.model.Share;
 
 /**
@@ -12,7 +13,7 @@ import edu.ntnu.idatt2003.gruppe50.model.Share;
 public class Purchase extends Transaction{
 
     public Purchase(Share share, int week) {
-        super(share, week, new PurchaseCalculator);
+        super(share, week, new PurchaseCalculator(share));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.gruppe50.transaction;
 
+import edu.ntnu.idatt2003.gruppe50.calculator.SaleCalculator;
 import edu.ntnu.idatt2003.gruppe50.model.Share;
 
 /**
@@ -10,8 +11,13 @@ import edu.ntnu.idatt2003.gruppe50.model.Share;
  * </p>
  */
 public class Sale extends Transaction{
+
     public Sale(Share share, int week) {
-        super(share, week, new SaleCalculator);
+        if (week < 0) {
+            throw new IllegalArgumentException("Week cannot be negative");
+        }
+
+        super(share, week, new SaleCalculator(share, share.getStock().getSalesPrice()));
     }
 
 
