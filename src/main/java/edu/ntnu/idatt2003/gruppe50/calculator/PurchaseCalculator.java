@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2003.gruppe50.calculator;
 
-import edu.ntnu.idatt2003.gruppe50.Share;
+import edu.ntnu.idatt2003.gruppe50.model.Share;
 
 import java.math.BigDecimal;
 
