@@ -30,7 +30,10 @@ public class SaleCalculator implements TransactionCalculator {
         if (share == null) {
             throw new IllegalArgumentException("Share cannot be null");
         }
-        if (salesPrice.compareTo(BigDecimal.valueOf(0)) < 0) {
+        if (salesPrice == null) {
+            throw new IllegalArgumentException("Sales price cannot be null");
+        }
+        if (salesPrice.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Sales price cannot be less than zero");
         }
 
