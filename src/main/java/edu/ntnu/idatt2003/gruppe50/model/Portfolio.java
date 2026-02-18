@@ -67,7 +67,7 @@ public class Portfolio {
         }
         return shares.stream()
                 .filter(share -> share.getStock().getSymbol().equalsIgnoreCase(symbol))
-                .collect(Collectors.toList());
+                .toList();
         //vurdere å beskrive dette i rapporten!!
         //Spesielt med tanke på at den går i share for å hente stock for å hente symbol
     }
