@@ -2,6 +2,7 @@ package edu.ntnu.idatt2003.gruppe50.transaction;
 
 import edu.ntnu.idatt2003.gruppe50.Share;
 import edu.ntnu.idatt2003.gruppe50.Stock;
+import edu.ntnu.idatt2003.gruppe50.calculator.SaleCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
