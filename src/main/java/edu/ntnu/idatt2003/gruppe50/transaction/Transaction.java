@@ -1,7 +1,8 @@
 package edu.ntnu.idatt2003.gruppe50.transaction;
 
+import edu.ntnu.idatt2003.gruppe50.calculator.TransactionCalculator;
 import edu.ntnu.idatt2003.gruppe50.model.Share;
-//Må huske å importere
+
 
 /**
  * Represents a financial transaction in the game.
