@@ -46,6 +46,7 @@ public class SaleTest {
 
     @Test
     void isCommitted_returnsTrue_afterSale_isComplete() {
+        purchase.commit(player);
         sale.commit(player);
         assertTrue(sale.isCommitted());
     }
