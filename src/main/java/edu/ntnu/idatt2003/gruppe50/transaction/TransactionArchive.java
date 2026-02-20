@@ -36,6 +36,7 @@ public class TransactionArchive {
             throw new IllegalArgumentException("transaction cant be null");
         }
 
+        // This method doesn't care for the same content in a share, but rather the same object.
         if (transactions.contains(transaction)) {
             return false;
         }

@@ -1,12 +1,12 @@
 package edu.ntnu.idatt2003.gruppe50.model;
 
+import edu.ntnu.idatt2003.gruppe50.transaction.TransactionArchive;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerTest {
     private Player player;
@@ -59,14 +59,14 @@ public class PlayerTest {
     }
 
     @Test
-    void getPortfolio_returnsPlayerPortfolio() {
-        Player player2 = new Player("test", new BigDecimal(100));
-        assertEquals(player2.getPortfolio(), player.getPortfolio());
+    void getPortfolio_returnsPortfolio() {
+        assertInstanceOf(Portfolio.class, player.getPortfolio());
     }
 
     @Test
-    void getTransactionArchive_returnsPlayerTransactionArchive() {
-        Player player2 = new Player("test", new BigDecimal(100));
-        assertEquals(player2.getTransactionArchive(), player.getTransactionArchive());
+    void getTransactionArchive_returnsTransactionArchive() {
+        assertInstanceOf(TransactionArchive.class, player.getTransactionArchive());
     }
+
+
 }
