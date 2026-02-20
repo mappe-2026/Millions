@@ -1,5 +1,7 @@
 package edu.ntnu.idatt2003.gruppe50.model;
 
+import edu.ntnu.idatt2003.gruppe50.transaction.TransactionArchive;
+
 import java.math.BigDecimal;
 
 /**

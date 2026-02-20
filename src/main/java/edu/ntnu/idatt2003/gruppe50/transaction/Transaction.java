@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.gruppe50.transaction;
 
 import edu.ntnu.idatt2003.gruppe50.calculator.TransactionCalculator;
+import edu.ntnu.idatt2003.gruppe50.model.Player;
 import edu.ntnu.idatt2003.gruppe50.model.Share;
 
 
@@ -40,7 +41,6 @@ public abstract class Transaction {
         this.share = share;
         this.week = week;
         this.calculator = calculator;
-        this.committed = false;
     }
 
     /**
@@ -89,4 +89,12 @@ public abstract class Transaction {
      * @param player the player for whom the transaction is committed
      */
     public abstract void commit(Player player);
+
+    /**
+     * Sets committed to true
+     */
+    protected void markCommitted() {
+        this.committed = true;
+    }
 }
+
