@@ -1,7 +1,10 @@
 package edu.ntnu.idatt2003.gruppe50.transaction;
 
 import edu.ntnu.idatt2003.gruppe50.calculator.SaleCalculator;
+import edu.ntnu.idatt2003.gruppe50.model.Player;
 import edu.ntnu.idatt2003.gruppe50.model.Share;
+
+import java.math.BigDecimal;
 
 /**
  * Represents a transaction where a player sells shares.
@@ -23,6 +26,18 @@ public class Sale extends Transaction{
 
     @Override
     public void commit(Player player) {
-        //kommer senere
+        if (player == null) {
+            throw new IllegalArgumentException("Player cannot be null");
+        }
+        if (isCommitted()) {
+            return;
+        }
+
+        BigDecimal total = getCalculator().calculateTotal();
+
+        player.addMoney(total);
+        player.getPortfolio().removeShare(getShare());
+        player.getTransactionArchive().add(this);
+        markCommitted();
     }
 }
