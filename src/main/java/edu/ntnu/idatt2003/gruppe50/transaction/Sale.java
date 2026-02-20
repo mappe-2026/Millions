@@ -16,11 +16,7 @@ import java.math.BigDecimal;
 public class Sale extends Transaction{
 
     public Sale(Share share, int week) {
-        if (week < 0) {
-            throw new IllegalArgumentException("Week cannot be negative");
-        }
-
-        super(share, week, new SaleCalculator(share, share.getStock().getSalesPrice()));
+        super(share, week, new SaleCalculator(share));
     }
 
 
@@ -31,6 +27,9 @@ public class Sale extends Transaction{
         }
         if (isCommitted()) {
             return;
+        }
+        if (!player.getPortfolio().contains(getShare())) {
+            throw new IllegalArgumentException("Cannot sell a share you don't own");
         }
 
         BigDecimal total = getCalculator().calculateTotal();
