@@ -16,29 +16,20 @@ public class SaleCalculatorTest {
 
     @BeforeEach
     void setup() {
-        Stock stock = new Stock("KOG", "Kongsberg Gruppen", new BigDecimal("330"));
+        Stock stock = new Stock("KOG", "Kongsberg Gruppen", new BigDecimal("100"));
         share = new Share(stock, new BigDecimal("5"), new BigDecimal("100"));
-        calc = new SaleCalculator(share, new BigDecimal(100));
+        calc = new SaleCalculator(share);
     }
 
     @Test
     void constructor_nullShare_throwsException() {
-        assertThrows(IllegalArgumentException.class, () -> new SaleCalculator(null, BigDecimal.TEN));
+        assertThrows(IllegalArgumentException.class, () -> new SaleCalculator(null));
     }
 
-    @Test
-    void constructor_nullSalesPrice_throwsException() {
-        assertThrows(IllegalArgumentException.class, () -> new SaleCalculator(share, null));
-    }
-
-    @Test
-    void constructor_negativeSalesPrice_throwsException() {
-        assertThrows(IllegalArgumentException.class, () -> new SaleCalculator(share, new BigDecimal("-1")));
-    }
 
     @Test
     void constructor_validArgument_createsCalculator() {
-        assertDoesNotThrow(() -> new SaleCalculator(share, new BigDecimal(100)));
+        assertDoesNotThrow(() -> new SaleCalculator(share));
     }
 
     @Test
