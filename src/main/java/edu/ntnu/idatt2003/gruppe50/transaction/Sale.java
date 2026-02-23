@@ -19,7 +19,18 @@ public class Sale extends Transaction{
         super(share, week, new SaleCalculator(share));
     }
 
-
+    /**
+     * Commits this sale transaction for the specified player.
+     * <p>
+     * The player receives money from the sale, the share is removed from the player's portfolio,
+     * and the transaction is added to the player's transaction archive.
+     * <p>
+     * If the transaction is already committed, this method does nothing.
+     *
+     * @param player the player for whom the transaction is committed
+     * @throws IllegalArgumentException if player is null
+     * @throws IllegalArgumentException if the player does not own the share
+     */
     @Override
     public void commit(Player player) {
         if (player == null) {

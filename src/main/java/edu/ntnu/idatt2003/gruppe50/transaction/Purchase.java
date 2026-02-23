@@ -20,6 +20,17 @@ public class Purchase extends Transaction{
         super(share, week, new PurchaseCalculator(share));
     }
 
+    /**
+     * Commits this purchase transaction for the specified player.
+     * <p>
+     * The player uses money for the purchase, the share is added to the player's portfolio,
+     * and the transaction is added to the player's transaction archive.
+     * <p>
+     * If the transaction is already committed, this method does nothing.
+     *
+     * @param player the player for whom the transaction is committed
+     * @throws IllegalArgumentException if player is null
+     */
     @Override
     public void commit(Player player) {
         if (player == null) {
