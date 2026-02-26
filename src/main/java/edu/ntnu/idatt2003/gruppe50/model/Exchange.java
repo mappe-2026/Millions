@@ -8,13 +8,34 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Represents the exchange for buying and selling shares.
+ * <p>
+ *   The exchange updates every week with new
+ *   prices so the player can buy and sell unique stocks.
+ * </p>
+ */
 public class Exchange {
     private final String name;
     private int week;
     private final Map<String, Stock> stockMap;
     private final Random random;
 
+    /**
+     * Creates a new {@code exchange} with a name and stocks represented by symbols.
+     *
+     * @param name The name of the exchange
+     * @param stocks The stocks in the exchange
+     * @throws IllegalArgumentException if any parameter is null or invalid
+     */
     public Exchange(String name, List<Stock> stocks) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Name cannot be null");
+        }
+        if (stocks == null || stocks.isEmpty()) {
+            throw new IllegalArgumentException("Stock cannot be empty or null");
+        }
+
         this.name = name;
         stockMap = stocks.stream()
                 .collect(Collectors.toMap(
@@ -26,18 +47,40 @@ public class Exchange {
         random = new Random();
     }
 
+    /**
+     * Returns the exchanges name.
+     *
+     * @return name of the exchange
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Returns the current week.
+     *
+     * @return the week
+     */
     public int getWeek() {
         return week;
     }
 
+    /**
+     * Cheks if the stock is present in the exchange.
+     *
+     * @param symbol the stock symbol
+     * @return boolean based
+     */
     public boolean hasStock(String symbol) {
         return stockMap.containsKey(symbol);
     }
 
+    /**
+     * Returns stock from exchange.
+     *
+     * @param symbol the stock symbol
+     * @return stock from exchange
+     */
     public Stock getStock(String symbol) {
         if (!hasStock(symbol)) {
             throw new NoSuchElementException("No stock by that symbol");
@@ -45,6 +88,12 @@ public class Exchange {
         return stockMap.get(symbol);
     }
 
+    /**
+     * Search stocks in the exchange.
+     *
+     * @param searchTerm name or symbol of stock
+     * @return a list of stocks
+     */
     public List<Stock> findStocks(String searchTerm) {
 
         return stockMap.values().stream()
@@ -54,6 +103,14 @@ public class Exchange {
                 ).toList();
     }
 
+    /**
+     * Buys a share from the exchange.
+     *
+     * @param symbol the stock symbol
+     * @param quantity the number of stocks
+     * @param player the player
+     * @return a purchase
+     */
     public Transaction buy(String symbol, BigDecimal quantity, Player player) {
         if (!hasStock(symbol)) {
             throw new NoSuchElementException("No stock by that symbol");
@@ -73,6 +130,13 @@ public class Exchange {
         return purchase;
     }
 
+    /**
+     * Sells a share the player holds.
+     *
+     * @param share the share to be sold
+     * @param player the player
+     * @return a sale
+     */
     public Transaction sell(Share share, Player player) {
         if (share == null) {
             throw new IllegalArgumentException("Share cannot be null");
@@ -87,6 +151,9 @@ public class Exchange {
         return sale;
     }
 
+    /**
+     * Advances a week and randomizes stock prices.
+     */
     public void advance() {
         this.week++;
 
