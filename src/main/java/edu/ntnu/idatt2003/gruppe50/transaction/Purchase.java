@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * Represents a transaction where a player buys shares.
  * <p>
  *     A buy transaction deducts the purchase cost from the player's balance
- *     and adds the shares to the player's portfolio when commited.
+ *     and adds the shares to the player's portfolio when committed.
  * </p>
  */
 public class Purchase extends Transaction{
