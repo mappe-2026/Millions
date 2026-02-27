@@ -166,7 +166,7 @@ public class ExchangeTest {
     exchange.advance();
 
     BigDecimal newPrice = stock.getSalesPrice();
-    assertTrue(newPrice.compareTo(oldPrice) >= 0);
+    assertNotEquals(oldPrice, newPrice);
   }
 
   // helper method
