@@ -10,14 +10,13 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TransactionArchiveTest {
-    private Stock stock;
     private Share share;
     private TransactionArchive archive;
 
     @BeforeEach
     void setup() {
-        stock = new Stock("KOG", "Kongsberg Gruppen", new BigDecimal("330"));
-        share = new Share(stock, new BigDecimal("5"), new BigDecimal("310"));
+        Stock stock = new Stock("KOG", "Kongsberg Gruppen", bd("330"));
+        share = new Share(stock, bd("5"), bd("310"));
         archive = new TransactionArchive();
     }
 
@@ -36,7 +35,7 @@ public class TransactionArchiveTest {
         Purchase purchase = new Purchase(share, 1);
         assertTrue(archive.add(purchase));
         assertFalse(archive.add(purchase));
-        archive.add(new Purchase(share, 1));
+        assertTrue(archive.add(new Purchase(share, 1)));
     }
 
     @Test
@@ -66,4 +65,8 @@ public class TransactionArchiveTest {
         assertEquals(1, archive.countDistinctWeeks());
     }
 
+    //Helper method
+    private static BigDecimal bd(String value) {
+        return new BigDecimal(value);
+    }
 }

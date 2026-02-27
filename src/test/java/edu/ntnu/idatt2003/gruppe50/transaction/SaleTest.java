@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SaleTest {
     private Stock stock;
@@ -22,10 +20,10 @@ public class SaleTest {
 
     @BeforeEach
     void setup() {
-        stock = new Stock("KOG", "Kongsberg Gruppen", new BigDecimal("330"));
-        share = new Share(stock, new BigDecimal("5"), new BigDecimal("310"));
+        stock = new Stock("KOG", "Kongsberg Gruppen", bd("330"));
+        share = new Share(stock, new BigDecimal("5"), bd("310"));
         sale = new Sale(share, 12);
-        player = new Player("Test", new BigDecimal("2000"));
+        player = new Player("Test", bd("2000"));
         purchase = new Purchase(share, 1);
     }
 
@@ -53,8 +51,8 @@ public class SaleTest {
 
     @Test
     void constructor_validArguments_createsShare() {
-        Stock stock2 = new Stock("AAPL", "Apple", new BigDecimal("265"));
-        Share share2 = new Share(stock, new BigDecimal("3"), new BigDecimal("250"));
+        Stock stock2 = new Stock("AAPL", "Apple", bd("265"));
+        Share share2 = new Share(stock, bd("3"), bd("250"));
         Sale sale2 = new Sale(share2, 12);
 
         assertEquals(share2, sale2.getShare());
@@ -110,6 +108,11 @@ public class SaleTest {
         assertEquals(shareBefore - 1, player.getPortfolio().getShares().size());
         assertEquals(transactionArchiveBefore + 1, player.getTransactionArchive().getTransactions(12).size());
         assertTrue(sale.isCommitted());
+    }
+
+    //Helper method
+    private static BigDecimal bd(String value) {
+        return new BigDecimal(value);
     }
 }
 

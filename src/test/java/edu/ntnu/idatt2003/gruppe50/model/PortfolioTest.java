@@ -12,73 +12,95 @@ import java.util.List;
 
 class PortfolioTest {
     private Portfolio portfolio;
-    private Stock stock;
-    private Stock stock2;
     private Share share1;
     private Share share2;
     private Share share3;
-    private int sizeBefore;
 
     @BeforeEach
     void setUp() {
         portfolio = new Portfolio();
-        stock = new Stock("KOG", "Kongsberg Gruppen", new BigDecimal("330"));
-        stock2 = new Stock("AAPL", "Apple", new BigDecimal("400"));
-        share1 = new Share(stock, new BigDecimal("5"), new BigDecimal("310"));
-        share2 = new Share(stock, new BigDecimal("10"), new BigDecimal("320"));
-        share3 = new Share(stock2, new BigDecimal("10"), new BigDecimal("400"));
-        portfolio.addShare(share2);
-        sizeBefore = portfolio.getShares().size();
+
+        Stock stock = new Stock("KOG", "Kongsberg Gruppen", bd("330"));
+        Stock stock2 = new Stock("AAPL", "Apple", bd("400"));
+
+        share1 = new Share(stock, bd("5"), bd("310"));
+        share2 = new Share(stock, bd("10"), bd("320"));
+        share3 = new Share(stock2, bd("10"), bd("400"));
     }
 
 
     @Test
     void addShare_addsToList_returnsTrue() {
-        assertTrue(portfolio.addShare(share1));
+        int sizeBefore = portfolio.getShares().size();
+
+        boolean result = portfolio.addShare(share1);
+
+        assertTrue(result);
         assertEquals(sizeBefore + 1, portfolio.getShares().size());
     }
 
     @Test
-    void addShare_wontAddToList_returnsFalse() {
-        assertFalse(portfolio.addShare(null));
+    void addShare_wontAddNullShareToList_returnsFalse() {
+        int sizeBefore = portfolio.getShares().size();
+
+        boolean result = portfolio.addShare(null);
+
+        assertFalse(result);
         assertEquals(sizeBefore, portfolio.getShares().size());
     }
 
     @Test
     void removeShare_removesFromList_returnsTrue() {
-        assertTrue(portfolio.removeShare(share2));
-        assertEquals(sizeBefore - 1, portfolio.getShares().size());
+        int sizeBefore = portfolio.getShares().size();
+
+        portfolio.addShare(share1);
+        boolean result = portfolio.removeShare(share1);
+
+        assertTrue(result);
+        assertEquals(sizeBefore, portfolio.getShares().size());
     }
 
     @Test
     void removeNullShare_wontRemoveFromList_returnsFalse() {
-        assertFalse(portfolio.removeShare(null));
+        int sizeBefore = portfolio.getShares().size();
+
+        boolean result = portfolio.removeShare(null);
+
+        assertFalse(result);
         assertEquals(sizeBefore, portfolio.getShares().size());
     }
 
     @Test
     void removeShare_shareNotInPortfolio_returnsFalse() {
-        assertFalse(portfolio.removeShare(share1));
+        int sizeBefore = portfolio.getShares().size();
+
+        boolean result = portfolio.removeShare(share1);
+
+        assertFalse(result);
         assertEquals(sizeBefore, portfolio.getShares().size());
     }
 
     @Test
-    void getShares_returnsCopyWithSameElements() {
+    void getShares_returnsListWithSameElements() {
+        portfolio.addShare(share1);
+
         List<Share> result = portfolio.getShares();
 
         assertEquals(1, result.size());
-        assertSame(share2, result.getFirst());
+        assertSame(share1, result.getFirst());
     }
 
     @Test
     void getShares_returnsUnmodifiableList() {
         List<Share> result = portfolio.getShares();
 
-        assertThrows(UnsupportedOperationException.class, result::clear);
+        assertThrows(UnsupportedOperationException.class, () -> result.add(share1));
     }
 
     @Test
     void getShares_returnsNewListEachTime() {
+        portfolio.addShare(share1);
+
         assertNotSame(portfolio.getShares(), portfolio.getShares());
     }
 
@@ -89,8 +111,11 @@ class PortfolioTest {
 
     @Test
     void getShares_filtersBySymbol() {
-        List<Share> KOGShares = List.of(share2, share1);
         portfolio.addShare(share1);
+        portfolio.addShare(share2);
+
+        List<Share> KOGShares = List.of(share1, share2);
+
         assertEquals(KOGShares, portfolio.getShares("KOG"));
     }
 
@@ -98,16 +123,19 @@ class PortfolioTest {
     void getShares_whenNoSharesForSymbol_returnsEmptyList() {
         assertEquals(Collections.emptyList(), portfolio.getShares("AAPL"));
     }
-    //Kan vurdere flere tester
 
     @Test
     void contains_findsShare_returnsTrue() {
-        assertTrue(portfolio.contains(share2));
+        portfolio.addShare(share1);
+
+        assertTrue(portfolio.contains(share1));
     }
 
     @Test
     void contains_findsDifferentShareWithSameStock_returnsTrue() {
-        assertTrue(portfolio.contains(share1));
+        portfolio.addShare(share2);
+
+         assertTrue(portfolio.contains(share1));
     }
 
     @Test
@@ -126,6 +154,12 @@ class PortfolioTest {
     void contains_nullShare_throwsException() {
         assertThrows(IllegalArgumentException.class,
                 () -> portfolio.contains(null));
+    }
+
+
+    //Helper method
+    private static BigDecimal bd(String value) {
+        return new BigDecimal(value);
     }
 
 }
