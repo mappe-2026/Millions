@@ -62,7 +62,7 @@ public class TransactionArchive {
      * @throws IllegalArgumentException if {@code week} is negative
      */
     public List<Transaction> getTransactions(int week) {
-        if (week < 0) {
+        if (week < 1) {
             throw new IllegalArgumentException("Week cannot be negative");
         }
 
