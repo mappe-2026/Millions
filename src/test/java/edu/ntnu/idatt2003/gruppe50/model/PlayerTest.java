@@ -13,22 +13,22 @@ public class PlayerTest {
 
     @BeforeEach
     void setup() {
-        player = new Player("test", new BigDecimal(100));
+        player = new Player("test", bd("100"));
     }
 
     @Test
     void constructor_nullName_throwsException() {
-        assertThrows(IllegalArgumentException.class, () -> new Player(null, new BigDecimal("100")));
+        assertThrows(IllegalArgumentException.class, () -> new Player(null, bd("100")));
     }
 
     @Test
     void constructor_blankName_throwsException() {
-        assertThrows(IllegalArgumentException.class, () -> new Player(" ", new BigDecimal("100")));
+        assertThrows(IllegalArgumentException.class, () -> new Player(" ", bd("100")));
     }
 
     @Test
     void constructor_negativeMoney_throwsException() {
-        assertThrows(IllegalArgumentException.class, () -> new Player("test", new BigDecimal("-100")));
+        assertThrows(IllegalArgumentException.class, () -> new Player("test", bd("-100")));
     }
 
     @Test
@@ -43,19 +43,19 @@ public class PlayerTest {
 
     @Test
     void getMoney_returnsCurrentBalance() {
-        assertEquals(new BigDecimal("100"), player.getMoney());
+        assertEquals(bd("100"), player.getMoney());
     }
 
     @Test
     void addMoney_increasesBalanceByGivenAmount() {
-        player.addMoney(new BigDecimal("10"));
-        assertEquals(new BigDecimal("110"), player.getMoney());
+        player.addMoney(bd("10"));
+        assertEquals(bd("110"), player.getMoney());
     }
 
     @Test
     void withdrawMoney_decreasesBalanceByGivenAmount() {
-        player.withdrawMoney(new BigDecimal("10"));
-        assertEquals(new BigDecimal("90"), player.getMoney());
+        player.withdrawMoney(bd("10"));
+        assertEquals(bd("90"), player.getMoney());
     }
 
     @Test
@@ -68,5 +68,9 @@ public class PlayerTest {
         assertInstanceOf(TransactionArchive.class, player.getTransactionArchive());
     }
 
+    //Helper method
+    private static BigDecimal bd(String value) {
+        return new BigDecimal(value);
+    }
 
 }

@@ -15,8 +15,8 @@ public class PurchaseCalculatorTest {
 
     @BeforeEach
     void setup() {
-        Stock stock = new Stock("KOG", "Kongsberg Gruppen", new BigDecimal("330"));
-        share = new Share(stock, new BigDecimal("5"), new BigDecimal("100"));
+        Stock stock = new Stock("KOG", "Kongsberg Gruppen", bd("100"));
+        share = new Share(stock, bd("5"), bd("100"));
         calc = new PurchaseCalculator(share);
     }
 
@@ -32,7 +32,7 @@ public class PurchaseCalculatorTest {
 
     @Test
     void calculateGross_returnsCorrectValue() {
-        assertEquals(new BigDecimal(500), calc.calculateGross());
+        assertEquals(bd("500"), calc.calculateGross());
     }
 
     @Test
@@ -47,7 +47,11 @@ public class PurchaseCalculatorTest {
 
     @Test
     void calculateTotal_returnsCorrectTotal() {
-        assertEquals(new BigDecimal(525), calc.calculateTotal().stripTrailingZeros());
+        assertEquals(bd("525"), calc.calculateTotal().stripTrailingZeros());
     }
 
+    //Helper method
+    private static BigDecimal bd(String value) {
+        return new BigDecimal(value);
+    }
 }

@@ -11,41 +11,41 @@ class StockTest {
 
     @BeforeEach
     void setUp() {
-        stock = new Stock("KOG", "Kongsberg Gruppen", new BigDecimal("330"));
+        stock = new Stock("KOG", "Kongsberg Gruppen", bd("330"));
     }
 
     @Test
     void constructor_validArguments_createsStock() {
-        Stock stock = new Stock("AAPL", "Apple", new BigDecimal("265"));
+        Stock stock = new Stock("AAPL", "Apple", bd("265"));
 
         assertEquals("AAPL", stock.getSymbol());
         assertEquals("Apple", stock.getCompany());
-        assertEquals(new BigDecimal("265"), stock.getSalesPrice());
+        assertEquals(bd("265"), stock.getSalesPrice());
     }
 
     @Test
     void constructor_nullSymbol_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> new Stock(null, "Apple", new BigDecimal("265")));
+                () -> new Stock(null, "Apple", bd("265")));
     }
 
     @Test
     void constructor_blankSymbol_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> new Stock("   ", "Apple", new BigDecimal("265")));
+                () -> new Stock("   ", "Apple", bd("265")));
     }
 
 
     @Test
     void constructor_nullCompany_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> new Stock("AAPL", null, new BigDecimal("265")));
+                () -> new Stock("AAPL", null, bd("265")));
     }
 
     @Test
     void constructor_blankCompany_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> new Stock("AAPL", "   ", new BigDecimal("265")));
+                () -> new Stock("AAPL", "   ", bd("265")));
     }
 
 
@@ -58,13 +58,13 @@ class StockTest {
     @Test
     void constructor_negativeSalesPrice_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> new Stock("AAPL", "Apple", new BigDecimal("-265")));
+                () -> new Stock("AAPL", "Apple", bd("-265")));
     }
 
     @Test
     void constructor_zeroSalesPrice_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> new Stock("AAPL", "Apple", new BigDecimal("0")));
+                () -> new Stock("AAPL", "Apple", bd("0")));
     }
 
 
@@ -80,20 +80,20 @@ class StockTest {
 
     @Test
     void getSalesPrice_returnsLatestSalesPrice() {
-        assertEquals(new BigDecimal("330"), stock.getSalesPrice());
+        assertEquals(bd("330"), stock.getSalesPrice());
     }
 
     @Test
     void addNewSalesPrice_updatesLatestSalesPrice() {
-        stock.addNewSalesPrice(new BigDecimal("340"));
-        assertEquals(new BigDecimal("340"), stock.getSalesPrice());
+        stock.addNewSalesPrice(bd("340"));
+        assertEquals(bd("340"), stock.getSalesPrice());
     }
 
     @Test
     void addNewSalesPrice_multipleUpdates_returnsMostRecent() {
-        stock.addNewSalesPrice(new BigDecimal("340"));
-        stock.addNewSalesPrice(new BigDecimal("350"));
-        assertEquals(new BigDecimal("350"), stock.getSalesPrice());
+        stock.addNewSalesPrice(bd("340"));
+        stock.addNewSalesPrice(bd("350"));
+        assertEquals(bd("350"), stock.getSalesPrice());
     }
 
     @Test
@@ -109,6 +109,11 @@ class StockTest {
     @Test
     void addNewSalesPrice_negative_throwsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                () -> stock.addNewSalesPrice(new BigDecimal("-1")));
+                () -> stock.addNewSalesPrice(bd("-1")));
+    }
+
+    //Helper method
+    private static BigDecimal bd(String value) {
+        return new BigDecimal(value);
     }
 }

@@ -12,19 +12,18 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PurchaseTest {
-    private Stock stock;
     private Share share;
     private Purchase purchase;
-    private Player player;
+    private Player richPlayer;
     private Player poorPlayer;
 
     @BeforeEach
     void setup() {
-        stock = new Stock("KOG", "Kongsberg Gruppen", new BigDecimal("330"));
-        share = new Share(stock, new BigDecimal("5"), new BigDecimal("310"));
+        Stock stock = new Stock("KOG", "Kongsberg Gruppen", bd("330"));
+        share = new Share(stock, new BigDecimal("5"), bd("310"));
         purchase = new Purchase(share, 12);
-        player = new Player("Test", new BigDecimal("20000"));
-        poorPlayer = new Player("Test2", new BigDecimal("1"));
+        richPlayer = new Player("Test", bd("20000"));
+        poorPlayer = new Player("Test2", bd("1"));
     }
 
     @Test
@@ -44,7 +43,7 @@ public class PurchaseTest {
 
     @Test
     void isCommitted_returnsTrue_afterPurchase_isComplete() {
-        purchase.commit(player);
+        purchase.commit(richPlayer);
         assertTrue(purchase.isCommitted());
     }
 
@@ -73,30 +72,35 @@ public class PurchaseTest {
 
     @Test
     void commit_doesNothing_whenAlreadyCommitted() {
-        purchase.commit(player);
-        BigDecimal moneyBefore = player.getMoney();
-        int shareBefore = player.getPortfolio().getShares().size();
-        int transactionArchiveBefore = player.getTransactionArchive().getTransactions(12).size();
+        purchase.commit(richPlayer);
+        BigDecimal moneyBefore = richPlayer.getMoney();
+        int shareBefore = richPlayer.getPortfolio().getShares().size();
+        int transactionArchiveBefore = richPlayer.getTransactionArchive().getTransactions(12).size();
 
-        purchase.commit(player);
+        purchase.commit(richPlayer);
 
-        assertEquals(moneyBefore, player.getMoney());
-        assertEquals(shareBefore, player.getPortfolio().getShares().size());
-        assertEquals(transactionArchiveBefore, player.getTransactionArchive().getTransactions(12).size());
+        assertEquals(moneyBefore, richPlayer.getMoney());
+        assertEquals(shareBefore, richPlayer.getPortfolio().getShares().size());
+        assertEquals(transactionArchiveBefore, richPlayer.getTransactionArchive().getTransactions(12).size());
     }
 
     @Test
     void commit_updatesPlayerState_whenSuccessful() {
-        BigDecimal moneyBefore = player.getMoney();
-        int shareBefore = player.getPortfolio().getShares().size();
-        int transactionArchiveBefore = player.getTransactionArchive().getTransactions(12).size();
+        BigDecimal moneyBefore = richPlayer.getMoney();
+        int shareBefore = richPlayer.getPortfolio().getShares().size();
+        int transactionArchiveBefore = richPlayer.getTransactionArchive().getTransactions(12).size();
 
-        purchase.commit(player);
+        purchase.commit(richPlayer);
 
         BigDecimal moneyAfter = moneyBefore.subtract(purchase.getCalculator().calculateTotal());
 
-        assertEquals(moneyAfter, player.getMoney());
-        assertEquals(shareBefore + 1, player.getPortfolio().getShares().size());
-        assertEquals(transactionArchiveBefore + 1, player.getTransactionArchive().getTransactions(12).size());
+        assertEquals(moneyAfter, richPlayer.getMoney());
+        assertEquals(shareBefore + 1, richPlayer.getPortfolio().getShares().size());
+        assertEquals(transactionArchiveBefore + 1, richPlayer.getTransactionArchive().getTransactions(12).size());
+    }
+
+    //Helper method
+    private static BigDecimal bd(String value) {
+        return new BigDecimal(value);
     }
 }
