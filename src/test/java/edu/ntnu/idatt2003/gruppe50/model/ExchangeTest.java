@@ -148,7 +148,7 @@ public class ExchangeTest {
   }
 
   @Test
-  void advance_incrementsWee() {
+  void advance_incrementsWeek() {
     exchange.advance();
     assertEquals(2, exchange.getWeek());
   }
@@ -161,12 +161,12 @@ public class ExchangeTest {
     exchange.advance();
 
     BigDecimal newPrice = stock.getSalesPrice();
-    assertNotEquals(oldPrice,newPrice);
+    assertTrue(newPrice.compareTo(oldPrice) >= 0);
   }
 
   // helper method
   private BigDecimal bd(double num) {
-    return new BigDecimal(num);
+    return BigDecimal.valueOf(num);
   }
 }
 

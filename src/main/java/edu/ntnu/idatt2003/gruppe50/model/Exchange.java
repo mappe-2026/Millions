@@ -33,7 +33,7 @@ public class Exchange {
             throw new IllegalArgumentException("Name cannot be null");
         }
         if (stocks == null || stocks.isEmpty()) {
-            throw new IllegalArgumentException("Stock cannot be empty or null");
+            throw new IllegalArgumentException("Stocks cannot be null or empty");
         }
 
         this.name = name;
@@ -66,10 +66,11 @@ public class Exchange {
     }
 
     /**
-     * Cheks if the stock is present in the exchange.
+     * Checks if the stock is present in the exchange.
      *
      * @param symbol the stock symbol
-     * @return boolean based
+     * @return {@code true} if the exchange contains a stock with the given symbol,
+     *         {@code false} otherwise
      */
     public boolean hasStock(String symbol) {
         if (symbol == null || symbol.isBlank()) {
