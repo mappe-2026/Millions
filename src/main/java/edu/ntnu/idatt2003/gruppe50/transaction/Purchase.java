@@ -3,7 +3,6 @@ package edu.ntnu.idatt2003.gruppe50.transaction;
 import edu.ntnu.idatt2003.gruppe50.calculator.PurchaseCalculator;
 import edu.ntnu.idatt2003.gruppe50.model.Player;
 import edu.ntnu.idatt2003.gruppe50.model.Share;
-import edu.ntnu.idatt2003.gruppe50.model.Stock;
 
 import java.math.BigDecimal;
 
