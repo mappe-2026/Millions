@@ -71,6 +71,7 @@ public class Exchange {
      * @param symbol the stock symbol
      * @return {@code true} if the exchange contains a stock with the given symbol,
      *         {@code false} otherwise
+     * @throws IllegalArgumentException if symbol is null or blank
      */
     public boolean hasStock(String symbol) {
         if (symbol == null || symbol.isBlank()) {
@@ -85,6 +86,7 @@ public class Exchange {
      *
      * @param symbol the stock symbol
      * @return stock from exchange
+     * @throws NoSuchElementException if the exchange does not contain a stock with the specified {@code symbol}
      */
     public Stock getStock(String symbol) {
         if (!hasStock(symbol)) {
@@ -119,6 +121,10 @@ public class Exchange {
      * @param quantity the number of stocks
      * @param player the player
      * @return a purchase
+     * @throws NoSuchElementException if the exchange does not contain a stock with the specified {@code symbol}
+     * @throws IllegalArgumentException if {@code player} is {@code null},
+     *                                  if {@code quantity} is {@code null},
+     *                                  or if {@code quantity} is less than or equal to zero
      */
     public Transaction buy(String symbol, BigDecimal quantity, Player player) {
         if (!hasStock(symbol)) {
@@ -148,6 +154,8 @@ public class Exchange {
      * @param share the share to be sold
      * @param player the player
      * @return a sale
+     * @throws IllegalArgumentException if {@code share} is {@code null}
+     * @throws IllegalArgumentException if {@code player} is {@code null}
      */
     public Transaction sell(Share share, Player player) {
         if (share == null) {
