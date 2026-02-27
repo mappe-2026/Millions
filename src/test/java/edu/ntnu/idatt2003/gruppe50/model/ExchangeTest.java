@@ -20,9 +20,9 @@ public class ExchangeTest {
 
   @BeforeEach
   void setup() {
-    stock = new Stock("AAPL", "Apple", bd(10));
+    stock = new Stock("AAPL", "Apple", bd("10"));
     exchange = new Exchange("test", List.of(stock));
-    player = new Player("test", bd(1000));
+    player = new Player("test", bd("1000"));
   }
 
   @Test
@@ -92,6 +92,16 @@ public class ExchangeTest {
   }
 
   @Test
+  void findStocks_nullSearchTerm_throwsException() {
+    assertThrows(IllegalArgumentException.class, () -> exchange.findStocks(null));
+  }
+
+  @Test
+  void findStocks_blankSearchTerm_throwsException() {
+    assertThrows(IllegalArgumentException.class, () -> exchange.findStocks(""));
+  }
+
+  @Test
   void findStocks_findsStock() {
     assertEquals(stock, exchange.findStocks("A").getFirst());
   }
@@ -103,7 +113,7 @@ public class ExchangeTest {
 
   @Test
   void buy_nullSymbol_throwsException() {
-    assertThrows(IllegalArgumentException.class, () -> exchange.buy(null, bd(2), player));
+    assertThrows(IllegalArgumentException.class, () -> exchange.buy(null, bd("2"), player));
   }
 
   @Test
@@ -146,7 +156,7 @@ public class ExchangeTest {
 
   @Test
   void sell_validSale_returnsTransaction() {
-    exchange.buy("AAPL", bd(1), player);
+    exchange.buy("AAPL", bd("1"), player);
     Transaction t = exchange.sell(player.getPortfolio().getShares("AAPL").getFirst(), player);
     assertNotNull(t);
     assertInstanceOf(Sale.class, t);
@@ -170,8 +180,8 @@ public class ExchangeTest {
   }
 
   // helper method
-  private BigDecimal bd(double num) {
-    return BigDecimal.valueOf(num);
+  private static BigDecimal bd(String value) {
+    return new BigDecimal(value);
   }
 }
 

@@ -21,10 +21,12 @@ public class SaleTest {
     @BeforeEach
     void setup() {
         stock = new Stock("KOG", "Kongsberg Gruppen", bd("330"));
-        share = new Share(stock, new BigDecimal("5"), bd("310"));
-        sale = new Sale(share, 12);
-        player = new Player("Test", bd("2000"));
+        share = new Share(stock, bd("5"), bd("310"));
+
         purchase = new Purchase(share, 1);
+        sale = new Sale(share, 12);
+
+        player = new Player("Test", bd("2000"));
     }
 
     @Test
@@ -43,16 +45,17 @@ public class SaleTest {
     }
 
     @Test
-    void isCommitted_returnsTrue_afterSale_isComplete() {
+    void commit_setsCommittedTrue_whenSuccessful() {
         purchase.commit(player);
         sale.commit(player);
         assertTrue(sale.isCommitted());
     }
 
     @Test
-    void constructor_validArguments_createsShare() {
+    void constructor_validArguments_setsFieldsAndCalculator() {
         Stock stock2 = new Stock("AAPL", "Apple", bd("265"));
-        Share share2 = new Share(stock, bd("3"), bd("250"));
+        Share share2 = new Share(stock2, bd("3"), bd("250"));
+
         Sale sale2 = new Sale(share2, 12);
 
         assertEquals(share2, sale2.getShare());

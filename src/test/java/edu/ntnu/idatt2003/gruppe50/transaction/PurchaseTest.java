@@ -42,15 +42,15 @@ public class PurchaseTest {
     }
 
     @Test
-    void isCommitted_returnsTrue_afterPurchase_isComplete() {
+    void commit_setsCommittedTrue_whenSuccessful() {
         purchase.commit(richPlayer);
         assertTrue(purchase.isCommitted());
     }
 
     @Test
     void constructor_validArguments_createsShare() {
-        Stock stock2 = new Stock("AAPL", "Apple", new BigDecimal("265"));
-        Share share2 = new Share(stock2, new BigDecimal("3"), new BigDecimal("250"));
+        Stock stock2 = new Stock("AAPL", "Apple", bd("265"));
+        Share share2 = new Share(stock2, bd("3"), bd("250"));
         Purchase purchase2 = new Purchase(share2, 12);
 
         assertEquals(share2, purchase2.getShare());
@@ -87,16 +87,19 @@ public class PurchaseTest {
     @Test
     void commit_updatesPlayerState_whenSuccessful() {
         BigDecimal moneyBefore = richPlayer.getMoney();
-        int shareBefore = richPlayer.getPortfolio().getShares().size();
-        int transactionArchiveBefore = richPlayer.getTransactionArchive().getTransactions(12).size();
+        int sharesBefore = richPlayer.getPortfolio().getShares().size();
+        int archiveBefore = richPlayer.getTransactionArchive().getTransactions(12).size();
 
         purchase.commit(richPlayer);
 
-        BigDecimal moneyAfter = moneyBefore.subtract(purchase.getCalculator().calculateTotal());
+        BigDecimal expectedMoney = moneyBefore.subtract(purchase.getCalculator().calculateTotal());
 
-        assertEquals(moneyAfter, richPlayer.getMoney());
-        assertEquals(shareBefore + 1, richPlayer.getPortfolio().getShares().size());
-        assertEquals(transactionArchiveBefore + 1, richPlayer.getTransactionArchive().getTransactions(12).size());
+        assertAll(
+                () -> assertEquals(expectedMoney, richPlayer.getMoney(), "Money should decrease by total cost"),
+                () -> assertEquals(sharesBefore + 1, richPlayer.getPortfolio().getShares().size(), "Portfolio should gain 1 share"),
+                () -> assertTrue(richPlayer.getPortfolio().contains(share), "Portfolio should contain the purchased share"),
+                () -> assertEquals(archiveBefore + 1, richPlayer.getTransactionArchive().getTransactions(12).size(), "Archive should gain 1 transaction")
+        );
     }
 
     //Helper method
