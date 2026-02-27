@@ -72,6 +72,10 @@ public class Exchange {
      * @return boolean based
      */
     public boolean hasStock(String symbol) {
+        if (symbol == null || symbol.isBlank()) {
+            throw new IllegalArgumentException("Symbol cannot be null or blank");
+        }
+
         return stockMap.containsKey(symbol);
     }
 
