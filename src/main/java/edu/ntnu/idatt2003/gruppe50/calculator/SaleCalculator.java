@@ -16,14 +16,10 @@ public class SaleCalculator implements TransactionCalculator {
     /**
      * Creates a calculator for the sale of a specific
      * share which can calculate the belonging fees.
-     * <p>
-     *     Validates that the share is not {@code null}
-     *     or that the sales price is less than 0.
-     *     If it is an {@link IllegalArgumentException} is thrown.
-     * </p>
      *
      * @param share the share being sold, the purchase price and
      *              quantity is used to determine profit.
+     * @throws IllegalArgumentException if {@code share} is null
      */
     public SaleCalculator(Share share) {
         if (share == null) {
