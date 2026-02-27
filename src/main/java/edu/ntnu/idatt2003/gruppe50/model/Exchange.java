@@ -162,7 +162,7 @@ public class Exchange {
         this.week++;
 
         stockMap.replaceAll((symbol, stock) -> {
-            double change = random.nextDouble()*0.4;
+            double change = -0.2 + random.nextDouble()*0.4;
             BigDecimal multiplier = BigDecimal.valueOf(1 + change);
 
             BigDecimal newPrice = stock.getSalesPrice().multiply(multiplier);
