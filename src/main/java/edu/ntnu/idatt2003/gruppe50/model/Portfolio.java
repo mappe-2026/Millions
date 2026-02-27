@@ -2,7 +2,7 @@ package edu.ntnu.idatt2003.gruppe50.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 /**
  * Represents a portfolio containing shares owned by a user.
@@ -67,9 +67,7 @@ public class Portfolio {
         }
         return shares.stream()
                 .filter(share -> share.getStock().getSymbol().equalsIgnoreCase(symbol))
-                .collect(Collectors.toList());
-        //vurdere å beskrive dette i rapporten!!
-        //Spesielt med tanke på at den går i share for å hente stock for å hente symbol
+                .toList();
     }
 
     /**
