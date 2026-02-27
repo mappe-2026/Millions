@@ -168,7 +168,7 @@ public class Exchange {
     public void advance() {
         this.week++;
 
-        stockMap.replaceAll((symbol, stock) -> {
+        stockMap.replaceAll((_, stock) -> {
             double change = -0.2 + random.nextDouble()*0.4;
             BigDecimal multiplier = BigDecimal.valueOf(1 + change);
 
