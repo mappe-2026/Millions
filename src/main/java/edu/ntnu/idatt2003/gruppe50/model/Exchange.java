@@ -30,7 +30,7 @@ public class Exchange {
      */
     public Exchange(String name, List<Stock> stocks) {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be null");
+            throw new IllegalArgumentException("Name cannot be null or blank");
         }
         if (stocks == null || stocks.isEmpty()) {
             throw new IllegalArgumentException("Stock cannot be empty or null");
@@ -97,8 +97,12 @@ public class Exchange {
      *
      * @param searchTerm name or symbol of stock
      * @return a list of stocks
+     * @throws IllegalArgumentException if search term is null or blank
      */
     public List<Stock> findStocks(String searchTerm) {
+        if (searchTerm == null || searchTerm.isBlank()) {
+            throw new IllegalArgumentException("Search term cannot be null or blank");
+        }
 
         return stockMap.values().stream()
                 .filter(stock ->
@@ -119,8 +123,11 @@ public class Exchange {
         if (!hasStock(symbol)) {
             throw new NoSuchElementException("No stock by that symbol");
         }
+        if (quantity == null) {
+            throw new IllegalArgumentException("Quantity cannot be null");
+        }
         if (quantity.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("quantity cannot be less than 1");
+            throw new IllegalArgumentException("Quantity cannot be less than or equal to 0");
         }
         if (player == null) {
             throw new IllegalArgumentException("Player cannot be null");

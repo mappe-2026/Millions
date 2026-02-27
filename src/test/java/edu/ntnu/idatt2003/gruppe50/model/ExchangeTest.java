@@ -108,7 +108,7 @@ public class ExchangeTest {
 
   @Test
   void buy_nonExistingSymbol_throwsException() {
-    assertThrows(NoSuchElementException.class, () -> exchange.buy("MSFT", new BigDecimal("1"), player));
+    assertThrows(NoSuchElementException.class, () -> exchange.buy("KOG", new BigDecimal("1"), player));
   }
 
   @Test
@@ -119,6 +119,11 @@ public class ExchangeTest {
   @Test
   void buy_nullPlayer_throwsException() {
     assertThrows(IllegalArgumentException.class, () -> exchange.buy("AAPL", new BigDecimal("1"), null));
+  }
+
+  @Test
+  void buy_nullQuantity_throwsException() {
+    assertThrows(IllegalArgumentException.class, () -> exchange.buy("AAPL", null, player));
   }
 
   @Test
