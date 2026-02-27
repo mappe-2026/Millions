@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 /**
  * Represents a transaction where a player sells shares.
  * <p>
- *     A buy transaction adds the sale price to the player's balance
- *     and removes the shares from the player's portfolio when commited.
+ *     A sale transaction adds the sale price to the player's balance
+ *     and removes the shares from the player's portfolio when committed.
  * </p>
  */
 public class Sale extends Transaction{
