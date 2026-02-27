@@ -33,7 +33,7 @@ public class TransactionArchive {
      */
     public boolean add(Transaction transaction) {
         if (transaction == null) {
-            throw new IllegalArgumentException("transaction cant be null");
+            throw new IllegalArgumentException("Transaction cannot be null");
         }
 
         // This method doesn't care for the same content in a share, but rather the same object.
