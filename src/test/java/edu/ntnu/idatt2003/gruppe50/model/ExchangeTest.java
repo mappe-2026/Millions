@@ -141,8 +141,8 @@ public class ExchangeTest {
 
   @Test
   void sell_validSale_returnsTransaction() {
-    Share share = new Share(exchange.getStock("AAPL"), new BigDecimal("1"), new BigDecimal("100"));
-    Transaction t = exchange.sell(share, player);
+    exchange.buy("AAPL", bd(1), player);
+    Transaction t = exchange.sell(player.getPortfolio().getShares("AAPL").getFirst(), player);
     assertNotNull(t);
     assertInstanceOf(Sale.class, t);
   }
