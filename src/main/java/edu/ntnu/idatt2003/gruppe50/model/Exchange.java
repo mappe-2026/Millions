@@ -179,4 +179,18 @@ public class Exchange {
         });
     }
 
+    public List<Stock> getGainers(int limit) {
+        return stockMap.values().stream()
+              .sorted((a,b) -> b.getHighestPrice().compareTo(a.getHighestPrice()))
+              .limit(limit)
+              .toList();
+    }
+
+    public List<Stock> getLosers(int limit) {
+        return stockMap.values().stream()
+              .sorted((a, b) -> a.getLowestPrice().compareTo(b.getLowestPrice()))
+              .limit(limit)
+              .toList();
+    }
+
 }
