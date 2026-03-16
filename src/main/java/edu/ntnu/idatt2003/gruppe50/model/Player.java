@@ -100,4 +100,15 @@ public class Player {
     public BigDecimal getNetWorth() {
         return money.add(portfolio.getNetWorth());
     }
+
+    public String getStatus(Exchange exchange) {
+        int week = exchange.getWeek();
+        if (money.compareTo(startingMoney.multiply(BigDecimal.valueOf(1.2))) > 0 && week >= 10) {
+            return "Investor";
+        } else if (money.compareTo(startingMoney.multiply(BigDecimal.TWO)) > 0 && week >= 20) {
+            return "Speculator";
+        } else {
+            return "Novice";
+        }
+    }
 }
