@@ -1,5 +1,8 @@
 package edu.ntnu.idatt2003.gruppe50.model;
 
+import edu.ntnu.idatt2003.gruppe50.calculator.SaleCalculator;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,5 +89,12 @@ public class Portfolio {
         return shares.stream()
                 .anyMatch(share ->
                         share.getStock().equals(shareToCheck.getStock()));
-        }
+    }
+
+    public BigDecimal getNetWorth() {
+        return shares.stream()
+              .map(a -> new SaleCalculator(a).calculateTotal())
+              // First parameter is start value, second parameter is the accumulative value
+              .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 }
