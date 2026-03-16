@@ -78,4 +78,27 @@ public class Stock {
         }
         prices.add(salesPrice);
     }
+
+    public List<BigDecimal> getHistoricalPrices() {
+        return prices;
+    }
+
+    public BigDecimal getHighestPrice() {
+        return prices.stream()
+              .max(BigDecimal::compareTo)
+              .orElseThrow();
+    }
+
+    public BigDecimal getLowestPrice() {
+        return prices.stream()
+              .min(BigDecimal::compareTo)
+              .orElseThrow();
+    }
+
+    public BigDecimal getLatestPriceChange() {
+        int lastIndex = prices.size();
+        return prices.getLast().subtract(prices.get(lastIndex-1));
+    }
+
+
 }
