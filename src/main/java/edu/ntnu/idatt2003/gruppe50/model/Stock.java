@@ -79,22 +79,45 @@ public class Stock {
         prices.add(salesPrice);
     }
 
+    /**
+     * Returns the stock price history.
+     *
+     * @return list of stock price as BigDecimal
+     */
     public List<BigDecimal> getHistoricalPrices() {
         return prices;
     }
 
+    /**
+     * Calculates and returns the stocks highest recorded value.
+     *
+     * @return the highest value as a {@link BigDecimal}
+     */
     public BigDecimal getHighestPrice() {
         return prices.stream()
               .max(BigDecimal::compareTo)
               .orElseThrow();
     }
 
+    /**
+     * Calculates and returns the stocks lowest recorded value.
+     *
+     * @return the lowest value as a {@link BigDecimal}
+     */
     public BigDecimal getLowestPrice() {
         return prices.stream()
               .min(BigDecimal::compareTo)
               .orElseThrow();
     }
 
+    /**
+     * Calculates the price change.
+     * <p>
+     *     The price change is the difference between the
+     *     latest price minus the previous one.
+     * </p>
+     * @return the price change as {@link BigDecimal}
+     */
     public BigDecimal getLatestPriceChange() {
         int lastIndex = prices.size();
         return prices.getLast().subtract(prices.get(lastIndex-1));

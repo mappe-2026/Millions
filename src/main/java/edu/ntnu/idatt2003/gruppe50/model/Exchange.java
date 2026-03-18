@@ -179,6 +179,12 @@ public class Exchange {
         });
     }
 
+    /**
+     * Returns a list of the stocks with the most profit.
+     *
+     * @param limit how many stocks do you want in the list
+     * @return list of stocks with the most profitable stocks
+     */
     public List<Stock> getGainers(int limit) {
         return stockMap.values().stream()
               .sorted((a,b) -> b.getHighestPrice().compareTo(a.getHighestPrice()))
@@ -186,6 +192,12 @@ public class Exchange {
               .toList();
     }
 
+    /**
+     * Returns a list of the stocks with the biggest loss.
+     *
+     * @param limit how many stocks do you want in the list
+     * @return list of stocks with the least profitable stocks
+     */
     public List<Stock> getLosers(int limit) {
         return stockMap.values().stream()
               .sorted((a, b) -> a.getLowestPrice().compareTo(b.getLowestPrice()))

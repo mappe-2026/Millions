@@ -91,6 +91,14 @@ public class Portfolio {
                         share.getStock().equals(shareToCheck.getStock()));
     }
 
+    /**
+     * Calculates the portfolio net worth.
+     * <p>
+     *     Calculates the amount of money the portfolio is worth
+     *     if the player were to sell all their stocks.
+     * </p>
+     * @return the portfolio net worth as {@link BigDecimal}
+     */
     public BigDecimal getNetWorth() {
         return shares.stream()
               .map(a -> new SaleCalculator(a).calculateTotal())
