@@ -156,6 +156,13 @@ class PortfolioTest {
                 () -> portfolio.contains(null));
     }
 
+    @Test
+    void getNetWorth_returnsNetWorth() {
+        portfolio.addShare(share1);
+        portfolio.addShare(share2);
+        portfolio.addShare(share3);
+        assertEquals(bd("8815.350"), portfolio.getNetWorth());
+    }
 
     //Helper method
     private static BigDecimal bd(String value) {
