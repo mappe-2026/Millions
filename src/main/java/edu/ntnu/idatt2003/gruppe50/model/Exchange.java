@@ -127,7 +127,7 @@ public class Exchange {
         if (quantity == null) {
             throw new IllegalArgumentException("Quantity cannot be null");
         }
-        if (quantity.compareTo(BigDecimal.ZERO) < 0) {
+        if (quantity.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Quantity cannot be less than or equal to 0");
         }
         if (player == null) {
@@ -187,7 +187,7 @@ public class Exchange {
      */
     public List<Stock> getGainers(int limit) {
         return stockMap.values().stream()
-              .sorted((a,b) -> b.getHighestPrice().compareTo(a.getHighestPrice()))
+              .sorted((a,b) -> b.getLatestPriceChange().compareTo(a.getLatestPriceChange()))
               .limit(limit)
               .toList();
     }
@@ -200,7 +200,7 @@ public class Exchange {
      */
     public List<Stock> getLosers(int limit) {
         return stockMap.values().stream()
-              .sorted((a, b) -> a.getLowestPrice().compareTo(b.getLowestPrice()))
+              .sorted((a, b) -> a.getLatestPriceChange().compareTo(b.getLatestPriceChange()))
               .limit(limit)
               .toList();
     }

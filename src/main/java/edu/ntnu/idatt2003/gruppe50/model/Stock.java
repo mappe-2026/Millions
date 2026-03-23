@@ -85,7 +85,7 @@ public class Stock {
      * @return list of stock price as BigDecimal
      */
     public List<BigDecimal> getHistoricalPrices() {
-        return prices;
+        return List.copyOf(prices);
     }
 
     /**
@@ -119,7 +119,7 @@ public class Stock {
      * @return the price change as {@link BigDecimal}
      */
     public BigDecimal getLatestPriceChange() {
-        int lastIndex = prices.size();
+        int lastIndex = prices.size()-1;
         return prices.getLast().subtract(prices.get(lastIndex-1));
     }
 

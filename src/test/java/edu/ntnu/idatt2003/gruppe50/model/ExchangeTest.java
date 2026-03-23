@@ -14,25 +14,27 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ExchangeTest {
-  private Stock stock;
+  private Stock aapl, kog, eqnr;
   private Exchange exchange;
   private Player player;
 
   @BeforeEach
   void setup() {
-    stock = new Stock("AAPL", "Apple", bd(10));
-    exchange = new Exchange("test", List.of(stock));
+    aapl = new Stock("AAPL", "Apple", bd(100));
+    kog = new Stock("KOG", "Kongsberg", bd(200));
+    eqnr = new Stock("EQNR", "Equinor", bd(50));
+    exchange = new Exchange("test", List.of(aapl, kog, eqnr));
     player = new Player("test", bd(1000));
   }
 
   @Test
   void constructor_nullName_throwsException() {
-    assertThrows(IllegalArgumentException.class, () -> new Exchange(null, List.of(stock)));
+    assertThrows(IllegalArgumentException.class, () -> new Exchange(null, List.of(aapl)));
   }
 
   @Test
   void constructor_blankName_throwsException() {
-     assertThrows(IllegalArgumentException.class, () -> new Exchange("", List.of(stock)));
+     assertThrows(IllegalArgumentException.class, () -> new Exchange("", List.of(aapl)));
   }
 
   @Test
@@ -62,7 +64,7 @@ public class ExchangeTest {
 
   @Test
   void hasStock_returnsFalse() {
-    assertFalse(exchange.hasStock("KOG"));
+    assertFalse(exchange.hasStock("MSFT"));
   }
 
   @Test
@@ -77,12 +79,12 @@ public class ExchangeTest {
 
   @Test
   void getStock_returnsStock() {
-    assertEquals(stock, exchange.getStock("AAPL"));
+    assertEquals(aapl, exchange.getStock("AAPL"));
   }
 
   @Test
   void getStock_wrongSymbol_throwsException() {
-    assertThrows(NoSuchElementException.class, () -> exchange.getStock("KOG"));
+    assertThrows(NoSuchElementException.class, () -> exchange.getStock("MSFT"));
   }
 
   @Test
@@ -93,7 +95,7 @@ public class ExchangeTest {
 
   @Test
   void findStocks_findsStock() {
-    assertEquals(stock, exchange.findStocks("A").getFirst());
+    assertEquals(aapl, exchange.findStocks("A").getFirst());
   }
 
   @Test
@@ -108,7 +110,7 @@ public class ExchangeTest {
 
   @Test
   void buy_nonExistingSymbol_throwsException() {
-    assertThrows(NoSuchElementException.class, () -> exchange.buy("KOG", new BigDecimal("1"), player));
+    assertThrows(NoSuchElementException.class, () -> exchange.buy("MSFT", new BigDecimal("1"), player));
   }
 
   @Test
@@ -167,6 +169,53 @@ public class ExchangeTest {
 
     BigDecimal newPrice = stock.getSalesPrice();
     assertNotEquals(oldPrice, newPrice);
+  }
+
+  @Test
+  void buy_zeroQuantity_throwsException() {
+    assertThrows(IllegalArgumentException.class, () -> exchange.buy("AAPL", bd(0), player));
+  }
+
+  @Test
+  void findStocks_caseInsensitive() {
+    assertFalse(exchange.findStocks("aapl").isEmpty());
+    assertFalse(exchange.findStocks("AAPL").isEmpty());
+  }
+
+  @Test
+  void getGainers_returnsSortedByLatestPriceChange_descending() {
+    aapl.addNewSalesPrice(bd(120));
+    kog.addNewSalesPrice(bd(180));
+    eqnr.addNewSalesPrice(bd(65));
+
+    assertEquals(List.of(aapl, eqnr, kog), exchange.getGainers(3));
+  }
+
+  @Test
+  void getLosers_returnsSortedByLatestPriceChange_ascending() {
+    aapl.addNewSalesPrice(bd(120));
+    kog.addNewSalesPrice(bd(180));
+    eqnr.addNewSalesPrice(bd(65));
+
+    assertEquals(List.of(kog, eqnr, aapl), exchange.getLosers(3));
+  }
+
+  @Test
+  void getGainers_respectsLimit() {
+    aapl.addNewSalesPrice(bd(120));
+    kog.addNewSalesPrice(bd(180));
+    eqnr.addNewSalesPrice(bd(65));
+
+    assertEquals(List.of(aapl, eqnr), exchange.getGainers(2));
+  }
+
+  @Test
+  void getLosers_respectsLimit() {
+    aapl.addNewSalesPrice(bd(120));
+    kog.addNewSalesPrice(bd(180));
+    eqnr.addNewSalesPrice(bd(65));
+
+    assertEquals(List.of(kog, eqnr), exchange.getLosers(2));
   }
 
   // helper method
