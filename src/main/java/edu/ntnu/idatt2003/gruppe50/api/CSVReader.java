@@ -18,8 +18,9 @@ public class CSVReader {
     public static void readLines(Path path) {
         try (BufferedReader bufferedReader = Files.newBufferedReader(path)) {
             String line;
-            // TODO: add so that the reader ignores # and empty lines
+        
             while ((line = bufferedReader.readLine()) != null) {
+                if (line.isBlank() || line.startsWith("#")) continue;
                 System.out.println(line);
             }
         } catch (IOException e) {
