@@ -82,7 +82,7 @@ public class Player {
     /**
      * Returns the player's portfolio, containing the owned shares.
      *
-     * @return the player's portfolio.
+     * @return the player's portfolio
      */
     public Portfolio getPortfolio() {
         return portfolio;
@@ -95,5 +95,37 @@ public class Player {
      */
     public TransactionArchive getTransactionArchive() {
         return transactionArchive;
+    }
+
+    /**
+     * Calculates the players total amount of money.
+     * <p>
+     *     The total amount of money is the money they have on their account
+     *     as well as the money would theoretically have if they sold all stocks.
+     * </p>
+     * @return the players net worth as {@link BigDecimal}
+     */
+    public BigDecimal getNetWorth() {
+        return money.add(portfolio.getNetWorth());
+    }
+
+    /**
+     * Returns the players status.
+     * <p>
+     *     Calculates the players status based on their net worth
+     *     and for how many weeks they have played.
+     * </p>
+     * @param exchange the exchange the user is trading their stocks in
+     * @return the players status title as a string
+     */
+    public String getStatus(Exchange exchange) {
+        int week = exchange.getWeek();
+        if (money.compareTo(startingMoney.multiply(BigDecimal.TWO)) > 0 && week >= 20) {
+            return "Speculator";
+        } else if (money.compareTo(startingMoney.multiply(BigDecimal.valueOf(1.2))) > 0 && week >= 10) {
+            return "Investor";
+        } else {
+            return "Novice";
+        }
     }
 }

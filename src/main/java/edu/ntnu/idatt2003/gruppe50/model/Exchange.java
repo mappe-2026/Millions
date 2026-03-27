@@ -127,7 +127,7 @@ public class Exchange {
         if (quantity == null) {
             throw new IllegalArgumentException("Quantity cannot be null");
         }
-        if (quantity.compareTo(BigDecimal.ZERO) < 0) {
+        if (quantity.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Quantity cannot be less than or equal to 0");
         }
         if (player == null) {
@@ -177,6 +177,32 @@ public class Exchange {
             stock.addNewSalesPrice(newPrice);
             return stock;
         });
+    }
+
+    /**
+     * Returns a list of the stocks with the most profit.
+     *
+     * @param limit how many stocks do you want in the list
+     * @return list of stocks with the most profitable stocks
+     */
+    public List<Stock> getGainers(int limit) {
+        return stockMap.values().stream()
+              .sorted((a,b) -> b.getLatestPriceChange().compareTo(a.getLatestPriceChange()))
+              .limit(limit)
+              .toList();
+    }
+
+    /**
+     * Returns a list of the stocks with the biggest loss.
+     *
+     * @param limit how many stocks do you want in the list
+     * @return list of stocks with the least profitable stocks
+     */
+    public List<Stock> getLosers(int limit) {
+        return stockMap.values().stream()
+              .sorted((a, b) -> a.getLatestPriceChange().compareTo(b.getLatestPriceChange()))
+              .limit(limit)
+              .toList();
     }
 
 }

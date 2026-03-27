@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,8 +69,67 @@ public class PlayerTest {
         assertInstanceOf(TransactionArchive.class, player.getTransactionArchive());
     }
 
+    @Test
+    void getNetWorth_returnsCashAndPortfolioValue() {
+        Stock stock = new Stock("KOG", "Kongsberg Gruppen", bd("100"));
+        Share share = new Share(stock, bd("5"), bd("100"));
+        player.getPortfolio().addShare(share);
+
+        BigDecimal expectedPrice = bd("595"); // money(100) + portfolioNetWorth(495)
+        assertEquals(expectedPrice, player.getNetWorth().stripTrailingZeros());
+    }
+
+    @Test
+    void getStatus_beforeWeek10_returnsNovice() {
+        Exchange ex = exchangeAtWeek(1);
+        player.addMoney(bd(1000));
+        assertEquals("Novice", player.getStatus(ex));
+    }
+
+    @Test
+    void getStatus_week10_over20Percent_returnsInvestor() {
+        Exchange ex = exchangeAtWeek(10);
+        player.addMoney(bd(21));
+        assertEquals("Investor", player.getStatus(ex));
+    }
+
+    @Test
+    void getStatus_week10_under20Percent_returnsNotInvestor() {
+        Exchange ex = exchangeAtWeek(10);
+        player.addMoney(bd(20));
+        assertEquals("Novice", player.getStatus(ex));
+        assertNotEquals("Investor", player.getStatus(ex));
+    }
+
+    @Test
+    void getStatus_week20_over100Percent_returnsSpeculator() {
+        Exchange ex = exchangeAtWeek(20);
+        player.addMoney(bd(101));
+        assertEquals("Speculator", player.getStatus(ex));
+    }
+
+    @Test
+    void getStatus_week20_under100Percent_returnsNotSpeculator() {
+        Exchange ex = exchangeAtWeek(20);
+        player.addMoney(bd(100));
+        assertNotEquals("Speculator", player.getStatus(ex));
+        assertEquals("Investor", player.getStatus(ex));
+    }
+
+
+    // helper method
+    private Exchange exchangeAtWeek(int week) {
+        Exchange ex = new Exchange("OSL", List.of(new Stock("AAPL", "Apple", bd(100))));
+        for (int i = 0; i < week; i++) {
+            ex.advance();
+        }
+        return ex;
+    }
+    private BigDecimal bd(double num) {
+        return BigDecimal.valueOf(num);
+    }
     //Helper method
-    private static BigDecimal bd(String value) {
+    private BigDecimal bd(String value) {
         return new BigDecimal(value);
     }
 

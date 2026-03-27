@@ -26,7 +26,6 @@ public class SaleCalculatorTest {
         assertThrows(IllegalArgumentException.class, () -> new SaleCalculator(null));
     }
 
-
     @Test
     void constructor_validArgument_createsCalculator() {
         assertDoesNotThrow(() -> new SaleCalculator(share));
@@ -45,6 +44,16 @@ public class SaleCalculatorTest {
     @Test
     void calculateTax_returnsZero() {
         assertEquals(BigDecimal.ZERO, calc.calculateTax().stripTrailingZeros());
+    }
+
+    @Test
+    void calculateTax_profitableSale_tax30Percent() {
+        Stock stock = new Stock("KOG", "Kongsberg Gruppen", bd("200"));
+        share = new Share(stock, bd("1"), bd("100"));
+        calc = new SaleCalculator(share);
+        BigDecimal profit = bd("100").subtract(calc.calculateCommission());
+
+        assertEquals(profit.multiply(bd("0.3")),  calc.calculateTax());
     }
 
     @Test
