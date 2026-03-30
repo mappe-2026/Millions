@@ -1,8 +1,7 @@
 package edu.ntnu.idatt2003.gruppe50.model;
 
-import edu.ntnu.idatt2003.gruppe50.transaction.Purchase;
-import edu.ntnu.idatt2003.gruppe50.transaction.Sale;
 import edu.ntnu.idatt2003.gruppe50.transaction.Transaction;
+import edu.ntnu.idatt2003.gruppe50.transaction.TransactionFactory;
 import edu.ntnu.idatt2003.gruppe50.util.Validate;
 
 import java.math.BigDecimal;
@@ -21,6 +20,7 @@ public class Exchange {
     private int week;
     private final Map<String, Stock> stockMap;
     private final Random random;
+    private final TransactionFactory factory;
 
     /**
      * Creates a new {@code exchange} with a name and stocks represented by symbols.
@@ -33,6 +33,8 @@ public class Exchange {
         Validate.notBlank(name, "Name");
         Validate.notEmpty(stocks, "Stocks");
 
+        Validate.notNull(factory, "Factory");
+
         this.name = name;
         stockMap = stocks.stream()
                 .collect(Collectors.toMap(
@@ -42,6 +44,7 @@ public class Exchange {
 
         week = 1;
         random = new Random();
+        this.factory = factory;
     }
 
     /**
@@ -125,10 +128,10 @@ public class Exchange {
 
         Stock stock = getStock(symbol);
         Share share = new Share(stock, quantity, stock.getSalesPrice());
-        Purchase purchase = new Purchase(share, this.week);
-        purchase.commit(player);
 
-        return purchase;
+        Transaction t = factory.createPurchase(share, this.week);
+        t.commit(player);
+        return t;
     }
 
     /**
@@ -143,10 +146,9 @@ public class Exchange {
         Validate.notNull(share, "Share");
         Validate.notNull(player, "Player");
 
-        Sale sale = new Sale(share, this.week);
-        sale.commit(player);
-
-        return sale;
+        Transaction t = factory.createSale(share, this.week);
+        t.commit(player);
+        return t;
     }
 
     /**
@@ -170,10 +172,8 @@ public class Exchange {
      *
      * @param limit how many stocks do you want in the list
      * @return list of stocks with the most profitable stocks
-     * @throws IllegalArgumentException if {@code limit} is negative
      */
     public List<Stock> getGainers(int limit) {
-        Validate.positiveInt(limit, "Limit");
         return stockMap.values().stream()
               .sorted((a,b) -> b.getLatestPriceChange().compareTo(a.getLatestPriceChange()))
               .limit(limit)
@@ -185,10 +185,8 @@ public class Exchange {
      *
      * @param limit how many stocks do you want in the list
      * @return list of stocks with the least profitable stocks
-     * @throws IllegalArgumentException if {@code limit} is negative
      */
     public List<Stock> getLosers(int limit) {
-        Validate.positiveInt(limit, "Limit");
         return stockMap.values().stream()
               .sorted((a, b) -> a.getLatestPriceChange().compareTo(b.getLatestPriceChange()))
               .limit(limit)
