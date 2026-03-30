@@ -183,6 +183,26 @@ public class ExchangeTest {
   }
 
   @Test
+  void getGainers_negativeLimit_throwsException() {
+    assertThrows(IllegalArgumentException.class, () -> exchange.getGainers(-1));
+  }
+
+  @Test
+  void getGainers_zeroLimit_throwsException() {
+    assertThrows(IllegalArgumentException.class, () -> exchange.getGainers(0));
+  }
+
+  @Test
+  void getLosers_negativeLimit_throwsException() {
+    assertThrows(IllegalArgumentException.class, () -> exchange.getLosers(-1));
+  }
+
+  @Test
+  void getLosers_zeroLimit_throwsException() {
+    assertThrows(IllegalArgumentException.class, () -> exchange.getLosers(0));
+  }
+
+  @Test
   void getGainers_returnsSortedByLatestPriceChange_descending() {
     aapl.addNewSalesPrice(bd(120));
     kog.addNewSalesPrice(bd(180));

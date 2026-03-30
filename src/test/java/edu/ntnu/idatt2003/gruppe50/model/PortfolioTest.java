@@ -40,13 +40,8 @@ class PortfolioTest {
     }
 
     @Test
-    void addShare_wontAddNullShareToList_returnsFalse() {
-        int sizeBefore = portfolio.getShares().size();
-
-        boolean result = portfolio.addShare(null);
-
-        assertFalse(result);
-        assertEquals(sizeBefore, portfolio.getShares().size());
+    void addShare_NullShareThrowsIllegalArgument() {
+        assertThrows(IllegalArgumentException.class, () -> portfolio.addShare(null));
     }
 
     @Test
@@ -61,13 +56,8 @@ class PortfolioTest {
     }
 
     @Test
-    void removeNullShare_wontRemoveFromList_returnsFalse() {
-        int sizeBefore = portfolio.getShares().size();
-
-        boolean result = portfolio.removeShare(null);
-
-        assertFalse(result);
-        assertEquals(sizeBefore, portfolio.getShares().size());
+    void removeShare_nullShareThrows(){
+        assertThrows(IllegalArgumentException.class, ()-> portfolio.removeShare(null));
     }
 
     @Test
@@ -107,6 +97,11 @@ class PortfolioTest {
     @Test
     void getShares_throwsIfSymbolIsNull() {
         assertThrows(IllegalArgumentException.class , () -> portfolio.getShares(null));
+    }
+
+    @Test
+    void getShares_blankSymbol_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> portfolio.getShares(" "));
     }
 
     @Test

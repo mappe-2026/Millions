@@ -54,9 +54,39 @@ public class PlayerTest {
     }
 
     @Test
+    void addMoney_nullAmount_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> player.addMoney(null));
+    }
+
+    @Test
+    void addMoney_negativeAmount_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> player.addMoney(bd("-10")));
+    }
+
+    @Test
+    void addMoney_zeroAmount_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> player.addMoney(bd("0")));
+    }
+
+    @Test
     void withdrawMoney_decreasesBalanceByGivenAmount() {
         player.withdrawMoney(bd("10"));
         assertEquals(bd("90"), player.getMoney());
+    }
+
+    @Test
+    void withdrawMoney_nullAmount_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> player.withdrawMoney(null));
+    }
+
+    @Test
+    void withdrawMoney_negativeAmount_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> player.withdrawMoney(bd("-10")));
+    }
+
+    @Test
+    void withdrawMoney_zeroAmount_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> player.withdrawMoney(bd("0")));
     }
 
     @Test
@@ -77,6 +107,11 @@ public class PlayerTest {
 
         BigDecimal expectedPrice = bd("595"); // money(100) + portfolioNetWorth(495)
         assertEquals(expectedPrice, player.getNetWorth().stripTrailingZeros());
+    }
+
+    @Test
+    void getStatus_nullExchange_throwsException() {
+        assertThrows(IllegalArgumentException.class, () -> player.getStatus(null));
     }
 
     @Test
