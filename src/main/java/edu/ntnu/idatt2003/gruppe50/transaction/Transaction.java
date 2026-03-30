@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.gruppe50.transaction;
 import edu.ntnu.idatt2003.gruppe50.calculator.TransactionCalculator;
 import edu.ntnu.idatt2003.gruppe50.model.Player;
 import edu.ntnu.idatt2003.gruppe50.model.Share;
+import edu.ntnu.idatt2003.gruppe50.util.Validate;
 
 
 /**
@@ -25,19 +26,13 @@ public abstract class Transaction {
      * @param share the share involved in the transaction
      * @param week the week number when the transaction occurred
      * @param calculator the calculator used in the transaction
-     * @throws IllegalArgumentException if {@code share} or {@code calculator}
-     * is {@code null}
+     * @throws IllegalArgumentException if {@code share} or {@code calculator} is {@code null},
+     *                                  or if {@code week} is not positive
      */
     protected Transaction(Share share, int week, TransactionCalculator calculator) {
-        if (share == null) {
-            throw new IllegalArgumentException("Share cannot be null");
-        }
-        if (week <= 0) {
-            throw new IllegalArgumentException("Week cannot be negative");
-        }
-        if (calculator == null) {
-            throw new IllegalArgumentException("Calculator cannot be null");
-        }
+        Validate.notNull(share, "Share");
+        Validate.positiveInt(week, "Week");
+        Validate.notNull(calculator, "Calculator");
         this.share = share;
         this.week = week;
         this.calculator = calculator;

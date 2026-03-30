@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.gruppe50.model;
 
 import edu.ntnu.idatt2003.gruppe50.transaction.TransactionArchive;
+import edu.ntnu.idatt2003.gruppe50.util.Validate;
 
 import java.math.BigDecimal;
 
@@ -27,15 +28,9 @@ public class Player {
      * @throws IllegalArgumentException If any argument is null or invalid
      */
     public Player(String name, BigDecimal startingMoney) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be null or blank");
-        }
-        if (startingMoney == null) {
-            throw new IllegalArgumentException("Starting money cannot be null");
-        }
-        if (startingMoney.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalArgumentException("Starting money cannot be negative");
-        }
+        Validate.notBlank(name, "Name");
+        Validate.positive(startingMoney, "Starting money");
+
         this.name = name;
         this.startingMoney = startingMoney;
         this.money = startingMoney;
@@ -65,8 +60,10 @@ public class Player {
      * Adds the given amount to the player's balance.
      *
      * @param amount the amount to add
+     * @throws IllegalArgumentException if {@code amount} is null or not positive
      */
     public void addMoney(BigDecimal amount) {
+        Validate.positive(amount, "Amount");
         money = money.add(amount);
     }
 
@@ -74,8 +71,10 @@ public class Player {
      * Subtracts the given amount from the player's balance.
      *
      * @param amount the amount to subtract
+     * @throws IllegalArgumentException if {@code amount} is null or not positive
      */
     public void withdrawMoney(BigDecimal amount) {
+        Validate.positive(amount, "Amount");
         money = money.subtract(amount);
     }
 
@@ -117,8 +116,10 @@ public class Player {
      * </p>
      * @param exchange the exchange the user is trading their stocks in
      * @return the players status title as a string
+     * @throws IllegalArgumentException if {@code exchange} is null
      */
     public String getStatus(Exchange exchange) {
+        Validate.notNull(exchange, "Exchange");
         int week = exchange.getWeek();
         if (money.compareTo(startingMoney.multiply(BigDecimal.TWO)) > 0 && week >= 20) {
             return "Speculator";

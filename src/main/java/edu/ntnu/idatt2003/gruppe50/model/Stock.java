@@ -1,5 +1,7 @@
 package edu.ntnu.idatt2003.gruppe50.model;
 
+import edu.ntnu.idatt2003.gruppe50.util.Validate;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +25,9 @@ public class Stock {
      * @throws IllegalArgumentException if any argument is invalid
      */
     public Stock(String symbol, String company, BigDecimal salesPrice) {
-        if (symbol == null || symbol.isBlank()) {
-            throw new IllegalArgumentException("Symbol cannot be null or blank");
-        }
-        if (company == null || company.isBlank()) {
-            throw new IllegalArgumentException("Company cannot be null or blank");
-        }
-        if (salesPrice == null || salesPrice.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Sales price must be positive");
-        }
+        Validate.notBlank(symbol, "Symbol");
+        Validate.notBlank(company, "Company");
+        Validate.positive(salesPrice, "Sales price");
 
         this.symbol = symbol;
         this.company = company;
@@ -73,9 +69,7 @@ public class Stock {
      * @throws IllegalArgumentException if the price is null, zero or negative
      */
     public void addNewSalesPrice(BigDecimal salesPrice) {
-        if (salesPrice == null || salesPrice.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Sales price must be positive");
-        }
+        Validate.positive(salesPrice, "Sales price");
         prices.add(salesPrice);
     }
 
