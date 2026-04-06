@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.gruppe50.model;
 import edu.ntnu.idatt2003.gruppe50.transaction.Purchase;
 import edu.ntnu.idatt2003.gruppe50.transaction.Sale;
 import edu.ntnu.idatt2003.gruppe50.transaction.Transaction;
+import edu.ntnu.idatt2003.gruppe50.transaction.TransactionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,28 +24,28 @@ public class ExchangeTest {
     aapl = new Stock("AAPL", "Apple", bd(100));
     kog = new Stock("KOG", "Kongsberg", bd(200));
     eqnr = new Stock("EQNR", "Equinor", bd(50));
-    exchange = new Exchange("test", List.of(aapl, kog, eqnr));
+    exchange = new Exchange("test", List.of(aapl, kog, eqnr), new TransactionFactory());
     player = new Player("test", bd(1000));
   }
 
   @Test
   void constructor_nullName_throwsException() {
-    assertThrows(IllegalArgumentException.class, () -> new Exchange(null, List.of(aapl)));
+    assertThrows(IllegalArgumentException.class, () -> new Exchange(null, List.of(aapl), new TransactionFactory()));
   }
 
   @Test
   void constructor_blankName_throwsException() {
-     assertThrows(IllegalArgumentException.class, () -> new Exchange("", List.of(aapl)));
+     assertThrows(IllegalArgumentException.class, () -> new Exchange("", List.of(aapl), new TransactionFactory()));
   }
 
   @Test
   void constructor_nullStocks_throwsException() {
-     assertThrows(IllegalArgumentException.class, () -> new Exchange("Test", null));
+     assertThrows(IllegalArgumentException.class, () -> new Exchange("Test", null, new TransactionFactory()));
   }
 
   @Test
   void constructor_emptyList_throwsException() {
-     assertThrows(IllegalArgumentException.class, () -> new Exchange("Test", new ArrayList<>()));
+     assertThrows(IllegalArgumentException.class, () -> new Exchange("Test", new ArrayList<>(), new TransactionFactory()));
   }
 
   @Test
