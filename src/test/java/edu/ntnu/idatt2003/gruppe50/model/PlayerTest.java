@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.gruppe50.model;
 
 import edu.ntnu.idatt2003.gruppe50.transaction.TransactionArchive;
+import edu.ntnu.idatt2003.gruppe50.transaction.TransactionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -154,7 +155,7 @@ public class PlayerTest {
 
     // helper method
     private Exchange exchangeAtWeek(int week) {
-        Exchange ex = new Exchange("OSL", List.of(new Stock("AAPL", "Apple", bd(100))));
+        Exchange ex = new Exchange("OSL", List.of(new Stock("AAPL", "Apple", bd(100))), new TransactionFactory());
         for (int i = 0; i < week; i++) {
             ex.advance();
         }
