@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.gruppe50.calculator;
 
 import edu.ntnu.idatt2003.gruppe50.model.Share;
+import edu.ntnu.idatt2003.gruppe50.util.Validate;
 
 import java.math.BigDecimal;
 
@@ -13,18 +14,13 @@ public class PurchaseCalculator implements TransactionCalculator {
 
     /**
      * Creates a calculator for determining the price of a share.
-     * <p>
-     *     Validates that the share is not {@code null}.
-     *     If null an {@link IllegalArgumentException} is thrown.
-     * </p>
      *
      * @param share being purchased, the quantity and
      *              purchase price is used to determine the cost.
+     * @throws IllegalArgumentException if {@code share} is null
      */
     public PurchaseCalculator(Share share) {
-        if (share == null) {
-            throw new IllegalArgumentException("Share cannot be null");
-        }
+        Validate.notNull(share, "Share");
 
         purchasePrice = share.getPurchasePrice();
         quantity = share.getQuantity();

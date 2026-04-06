@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.gruppe50.calculator;
 
 import edu.ntnu.idatt2003.gruppe50.model.Share;
+import edu.ntnu.idatt2003.gruppe50.util.Validate;
 
 import java.math.BigDecimal;
 
@@ -22,9 +23,7 @@ public class SaleCalculator implements TransactionCalculator {
      * @throws IllegalArgumentException if {@code share} is null
      */
     public SaleCalculator(Share share) {
-        if (share == null) {
-            throw new IllegalArgumentException("Share cannot be null");
-        }
+        Validate.notNull(share, "Share");
 
         this.purchasePrice = share.getPurchasePrice();
         this.quantity = share.getQuantity();

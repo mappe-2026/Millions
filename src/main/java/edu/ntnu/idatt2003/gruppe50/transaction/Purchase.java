@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.gruppe50.transaction;
 import edu.ntnu.idatt2003.gruppe50.calculator.PurchaseCalculator;
 import edu.ntnu.idatt2003.gruppe50.model.Player;
 import edu.ntnu.idatt2003.gruppe50.model.Share;
+import edu.ntnu.idatt2003.gruppe50.util.Validate;
 
 import java.math.BigDecimal;
 
@@ -28,13 +29,11 @@ public class Purchase extends Transaction{
      * If the transaction is already committed, this method does nothing.
      *
      * @param player the player for whom the transaction is committed
-     * @throws IllegalArgumentException if player is null
+     * @throws IllegalArgumentException if {@code player} is null or does not have enough money
      */
     @Override
     public void commit(Player player) {
-        if (player == null) {
-            throw new IllegalArgumentException("Player cannot be null");
-        }
+        Validate.notNull(player, "Player");
         if (isCommitted()) {
             return;
         }

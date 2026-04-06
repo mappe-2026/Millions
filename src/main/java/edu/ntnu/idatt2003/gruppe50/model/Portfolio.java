@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.gruppe50.model;
 
 import edu.ntnu.idatt2003.gruppe50.calculator.SaleCalculator;
+import edu.ntnu.idatt2003.gruppe50.util.Validate;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class Portfolio {
      *           {@code false} if the share could not be added
      */
     public boolean addShare(Share share) {
-        if (share == null) return false;
+        Validate.notNull(share, "Share");
         return shares.add(share);
     }
 
@@ -42,7 +43,7 @@ public class Portfolio {
      *           {@code false} if the share could not be removed
      */
     public boolean removeShare(Share share) {
-        if (share == null) return false;
+        Validate.notNull(share, "Share");
         return shares.remove(share);
     }
 
@@ -62,12 +63,10 @@ public class Portfolio {
      * @param symbol the share symbol to filter by
      * @return a list of all shares with the given symbol,
      *         or an empty list if none are found
-     * @throws IllegalArgumentException if symbol is null
+     * @throws IllegalArgumentException if symbol is null or blank
      */
     public List<Share> getShares(String symbol) {
-        if (symbol == null) {
-            throw new IllegalArgumentException("Symbol cannot be null");
-        }
+        Validate.notBlank(symbol, "Symbol");
         return shares.stream()
                 .filter(share -> share.getStock().getSymbol().equalsIgnoreCase(symbol))
                 .toList();
@@ -83,9 +82,7 @@ public class Portfolio {
      *         with the same stock as {@code shareToCheck}, {@code false} otherwise
      */
     public boolean contains(Share shareToCheck) {
-        if (shareToCheck == null) {
-            throw new IllegalArgumentException("The share used for searching can't be null");
-        }
+        Validate.notNull(shareToCheck, "Share to check");
         return shares.stream()
                 .anyMatch(share ->
                         share.getStock().equals(shareToCheck.getStock()));

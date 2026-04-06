@@ -1,5 +1,7 @@
 package edu.ntnu.idatt2003.gruppe50.model;
 
+import edu.ntnu.idatt2003.gruppe50.util.Validate;
+
 import java.math.BigDecimal;
 
 /**
@@ -23,15 +25,9 @@ public class Share {
      * @throws IllegalArgumentException if any argument is null, zero or negative.
      */
     public Share(Stock stock, BigDecimal quantity, BigDecimal purchasePrice) {
-        if (stock == null) {
-            throw new IllegalArgumentException("Stock cannot be null");
-        }
-        if (quantity == null || quantity.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Quantity cannot be null and must be positive");
-        }
-        if (purchasePrice == null || purchasePrice.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Purchase price cannot be null and must be positive");
-        }
+        Validate.notNull(stock, "Stock");
+        Validate.positive(quantity, "Quantity");
+        Validate.positive(purchasePrice, "Purchase price");
 
         this.stock = stock;
         this.quantity = quantity;

@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.gruppe50.model;
 import edu.ntnu.idatt2003.gruppe50.transaction.Purchase;
 import edu.ntnu.idatt2003.gruppe50.transaction.Sale;
 import edu.ntnu.idatt2003.gruppe50.transaction.Transaction;
+import edu.ntnu.idatt2003.gruppe50.util.Validate;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -29,12 +30,8 @@ public class Exchange {
      * @throws IllegalArgumentException if any parameter is null or invalid
      */
     public Exchange(String name, List<Stock> stocks) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name cannot be null or blank");
-        }
-        if (stocks == null || stocks.isEmpty()) {
-            throw new IllegalArgumentException("Stocks cannot be null or empty");
-        }
+        Validate.notBlank(name, "Name");
+        Validate.notEmpty(stocks, "Stocks");
 
         this.name = name;
         stockMap = stocks.stream()
@@ -71,12 +68,10 @@ public class Exchange {
      * @param symbol the stock symbol
      * @return {@code true} if the exchange contains a stock with the given symbol,
      *         {@code false} otherwise
+     * @throws IllegalArgumentException if {@code symbol} is null or blank
      */
     public boolean hasStock(String symbol) {
-        if (symbol == null || symbol.isBlank()) {
-            throw new IllegalArgumentException("Symbol cannot be null or blank");
-        }
-
+        Validate.notBlank(symbol, "Symbol");
         return stockMap.containsKey(symbol);
     }
 
@@ -85,8 +80,11 @@ public class Exchange {
      *
      * @param symbol the stock symbol
      * @return stock from exchange
+     * @throws IllegalArgumentException if {@code symbol} is null or blank
+     * @throws NoSuchElementException if no stock with the given symbol exists
      */
     public Stock getStock(String symbol) {
+        Validate.notBlank(symbol, "Symbol");
         if (!hasStock(symbol)) {
             throw new NoSuchElementException("No stock by that symbol");
         }
@@ -101,9 +99,7 @@ public class Exchange {
      * @throws IllegalArgumentException if search term is null or blank
      */
     public List<Stock> findStocks(String searchTerm) {
-        if (searchTerm == null || searchTerm.isBlank()) {
-            throw new IllegalArgumentException("Search term cannot be null or blank");
-        }
+        Validate.notBlank(searchTerm, "Searchterm");
 
         return stockMap.values().stream()
                 .filter(stock ->
@@ -119,20 +115,13 @@ public class Exchange {
      * @param quantity the number of stocks
      * @param player the player
      * @return a purchase
+     * @throws IllegalArgumentException if {@code symbol} is null or blank, {@code quantity} is null
+     *                                  or negative, or {@code player} is null
+     * @throws NoSuchElementException if no stock with the given symbol exists
      */
     public Transaction buy(String symbol, BigDecimal quantity, Player player) {
-        if (!hasStock(symbol)) {
-            throw new NoSuchElementException("No stock by that symbol");
-        }
-        if (quantity == null) {
-            throw new IllegalArgumentException("Quantity cannot be null");
-        }
-        if (quantity.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Quantity cannot be less than or equal to 0");
-        }
-        if (player == null) {
-            throw new IllegalArgumentException("Player cannot be null");
-        }
+        Validate.positive(quantity, "Quantity");
+        Validate.notNull(player, "Player");
 
         Stock stock = getStock(symbol);
         Share share = new Share(stock, quantity, stock.getSalesPrice());
@@ -148,14 +137,11 @@ public class Exchange {
      * @param share the share to be sold
      * @param player the player
      * @return a sale
+     * @throws IllegalArgumentException if {@code share} or {@code player} is null
      */
     public Transaction sell(Share share, Player player) {
-        if (share == null) {
-            throw new IllegalArgumentException("Share cannot be null");
-        }
-        if (player == null) {
-            throw new IllegalArgumentException("Player cannot be null");
-        }
+        Validate.notNull(share, "Share");
+        Validate.notNull(player, "Player");
 
         Sale sale = new Sale(share, this.week);
         sale.commit(player);
@@ -184,8 +170,10 @@ public class Exchange {
      *
      * @param limit how many stocks do you want in the list
      * @return list of stocks with the most profitable stocks
+     * @throws IllegalArgumentException if {@code limit} is negative
      */
     public List<Stock> getGainers(int limit) {
+        Validate.positiveInt(limit, "Limit");
         return stockMap.values().stream()
               .sorted((a,b) -> b.getLatestPriceChange().compareTo(a.getLatestPriceChange()))
               .limit(limit)
@@ -197,8 +185,10 @@ public class Exchange {
      *
      * @param limit how many stocks do you want in the list
      * @return list of stocks with the least profitable stocks
+     * @throws IllegalArgumentException if {@code limit} is negative
      */
     public List<Stock> getLosers(int limit) {
+        Validate.positiveInt(limit, "Limit");
         return stockMap.values().stream()
               .sorted((a, b) -> a.getLatestPriceChange().compareTo(b.getLatestPriceChange()))
               .limit(limit)
