@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.gruppe50.observer;
 import edu.ntnu.idatt2003.gruppe50.model.Exchange;
 import edu.ntnu.idatt2003.gruppe50.model.Player;
 import edu.ntnu.idatt2003.gruppe50.model.Stock;
+import edu.ntnu.idatt2003.gruppe50.transaction.TransactionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +26,7 @@ public class ExchangeObserverTest {
         aapl = new Stock("AAPL", "Apple", bd(100));
         kog = new Stock("KOG", "Kongsberg", bd(200));
         eqnr = new Stock("EQNR", "Equinor", bd(50));
-        exchange = new Exchange("test", List.of(aapl, kog, eqnr));
+        exchange = new Exchange("test", List.of(aapl, kog, eqnr), new TransactionFactory());
 
         observer = new TestObserver();
         exchange.addObserver(observer);
