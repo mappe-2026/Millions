@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.gruppe50.model;
 
+import edu.ntnu.idatt2003.gruppe50.observer.Observable;
 import edu.ntnu.idatt2003.gruppe50.transaction.Transaction;
 import edu.ntnu.idatt2003.gruppe50.transaction.TransactionFactory;
 import edu.ntnu.idatt2003.gruppe50.util.Validate;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
  *   prices so the player can buy and sell unique stocks.
  * </p>
  */
-public class Exchange {
+public class Exchange extends Observable {
     private final String name;
     private int week;
     private final Map<String, Stock> stockMap;
@@ -132,6 +133,9 @@ public class Exchange {
 
         Transaction t = factory.createPurchase(share, this.week);
         t.commit(player);
+
+        notifyObservers();
+
         return t;
     }
 
@@ -149,6 +153,9 @@ public class Exchange {
 
         Transaction t = factory.createSale(share, this.week);
         t.commit(player);
+
+        notifyObservers();
+
         return t;
     }
 
@@ -166,6 +173,7 @@ public class Exchange {
             stock.addNewSalesPrice(newPrice);
             return stock;
         });
+        notifyObservers();
     }
 
     /**
