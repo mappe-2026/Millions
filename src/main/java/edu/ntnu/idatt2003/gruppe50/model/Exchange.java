@@ -5,7 +5,6 @@ import edu.ntnu.idatt2003.gruppe50.transaction.Sale;
 import edu.ntnu.idatt2003.gruppe50.transaction.Transaction;
 import edu.ntnu.idatt2003.gruppe50.util.Validate;
 
-import javax.imageio.metadata.IIOInvalidTreeException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
