@@ -175,6 +175,7 @@ public class Exchange {
      * @return list of stocks with the most profitable stocks
      */
     public List<Stock> getGainers(int limit) {
+        Validate.positiveInt(limit, "Limit");
         return stockMap.values().stream()
               .sorted((a,b) -> b.getLatestPriceChange().compareTo(a.getLatestPriceChange()))
               .limit(limit)
@@ -188,6 +189,7 @@ public class Exchange {
      * @return list of stocks with the least profitable stocks
      */
     public List<Stock> getLosers(int limit) {
+        Validate.positiveInt(limit, "Limit");
         return stockMap.values().stream()
               .sorted((a, b) -> a.getLatestPriceChange().compareTo(b.getLatestPriceChange()))
               .limit(limit)
