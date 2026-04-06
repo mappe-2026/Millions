@@ -4,7 +4,6 @@ import edu.ntnu.idatt2003.gruppe50.transaction.Purchase;
 import edu.ntnu.idatt2003.gruppe50.transaction.Sale;
 import edu.ntnu.idatt2003.gruppe50.transaction.Transaction;
 import edu.ntnu.idatt2003.gruppe50.transaction.TransactionFactory;
-import edu.ntnu.idatt2003.gruppe50.util.Validate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
