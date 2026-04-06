@@ -1,5 +1,7 @@
 package edu.ntnu.idatt2003.gruppe50.observer;
 
+import edu.ntnu.idatt2003.gruppe50.util.Validate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ public abstract class Observable {
      * @param o the observer to add
      */
     public void addObserver(Observer o) {
+        Validate.notNull(o, "Observer");
         observers.add(o);
     }
 
@@ -24,6 +27,7 @@ public abstract class Observable {
      * @param o the observer to remove
      */
     public void removeObserver(Observer o) {
+        Validate.notNull(o, "Observer");
         observers.remove(o);
     }
 
