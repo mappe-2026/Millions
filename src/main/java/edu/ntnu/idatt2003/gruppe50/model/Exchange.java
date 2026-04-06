@@ -173,6 +173,7 @@ public class Exchange {
      *
      * @param limit how many stocks do you want in the list
      * @return list of stocks with the most profitable stocks
+     * @throws IllegalArgumentException if {@code limit <= 0}
      */
     public List<Stock> getGainers(int limit) {
         Validate.positiveInt(limit, "Limit");
@@ -187,6 +188,7 @@ public class Exchange {
      *
      * @param limit how many stocks do you want in the list
      * @return list of stocks with the least profitable stocks
+     * @throws IllegalArgumentException if {@code limit <= 0}
      */
     public List<Stock> getLosers(int limit) {
         Validate.positiveInt(limit, "Limit");
