@@ -133,6 +133,9 @@ public class Exchange extends Observable {
 
         Transaction t = factory.createPurchase(share, this.week);
         t.commit(player);
+
+        notifyObservers();
+
         return t;
     }
 
@@ -150,6 +153,9 @@ public class Exchange extends Observable {
 
         Transaction t = factory.createSale(share, this.week);
         t.commit(player);
+
+        notifyObservers();
+
         return t;
     }
 
@@ -167,6 +173,7 @@ public class Exchange extends Observable {
             stock.addNewSalesPrice(newPrice);
             return stock;
         });
+        notifyObservers();
     }
 
     /**
