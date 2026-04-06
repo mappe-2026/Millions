@@ -27,9 +27,10 @@ public class Exchange {
      *
      * @param name The name of the exchange
      * @param stocks The stocks in the exchange
+     * @param factory the transaction factory used
      * @throws IllegalArgumentException if any parameter is null or invalid
      */
-    public Exchange(String name, List<Stock> stocks) {
+    public Exchange(String name, List<Stock> stocks, TransactionFactory factory) {
         Validate.notBlank(name, "Name");
         Validate.notEmpty(stocks, "Stocks");
 
