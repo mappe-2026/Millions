@@ -10,33 +10,35 @@ import java.util.List;
  * Maintains a list of observers and notifies them of state changes.
  */
 public abstract class Observable {
-    private final List<Observer> observers = new ArrayList<>();
+  private final List<Observer> observers = new ArrayList<>();
 
 
-    /**
-     * Adds an observer to the list.
-     * @param o the observer to add
-     */
-    public void addObserver(Observer o) {
-        Validate.notNull(o, "Observer");
-        observers.add(o);
+  /**
+   * Adds an observer to the list.
+   *
+   * @param o the observer to add
+   */
+  public void addObserver(Observer o) {
+    Validate.notNull(o, "Observer");
+    observers.add(o);
+  }
+
+  /**
+   * Removes an observer from the list
+   *
+   * @param o the observer to remove
+   */
+  public void removeObserver(Observer o) {
+    Validate.notNull(o, "Observer");
+    observers.remove(o);
+  }
+
+  /**
+   * Updates all the observers.
+   */
+  public void notifyObservers() {
+    for (Observer o : observers) {
+      o.update();
     }
-
-    /**
-     * Removes an observer from the list
-     * @param o the observer to remove
-     */
-    public void removeObserver(Observer o) {
-        Validate.notNull(o, "Observer");
-        observers.remove(o);
-    }
-
-    /**
-     * Updates all the observers.
-     */
-    public void notifyObservers() {
-        for (Observer o : observers) {
-            o.update();
-        }
-    }
+  }
 }
