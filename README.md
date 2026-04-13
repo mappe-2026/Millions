@@ -1,9 +1,9 @@
 # Millions – Stock Market Simulator
 
-**STUDENT NAMES:** Marius Klepp , [Navn 2]  
+**STUDENT NAMES:** Marius Klepp , Kristian Vestbø
 **GROUP:** 50
 
-This project was developed as part of the course IDATx2003 (Programming 2), which is part of the Bachelor's program in Computer Science at NTNU. Millions is a Java-based stock market simulator where players can buy and sell shares, track their portfolio, and compete to grow their net worth over time.
+This project was developed as part of the course IDATT2003 (Programming 2), which is part of the Bachelor's program in Computer Science at NTNU. Millions is a Java-based stock market simulator where players can buy and sell shares, track their portfolio, and compete to grow their net worth over time.
 
 ---
 
@@ -21,7 +21,7 @@ This project was developed as part of the course IDATx2003 (Programming 2), whic
 
 ## About the Game
 
-Millions simulates a stock exchange where the player starts with a chosen amount of capital and a set of stocks loaded from a CSV file. Each week, stock prices change randomly, and the player must make smart decisions about when to buy and sell to maximize their net worth.
+Millions simulates a stock exchange where the player starts with a chosen amount of capital and a set of stocks loaded from a CSV file. Each week, stock prices change randomly, and the player must make smart decisions about when to buy and sell to maximize their net worth. 
 
 Key features include:
 
@@ -44,7 +44,7 @@ Key features include:
 **Clone the repository:**
 
 ```bash
-git clone [URL til ditt repo her]
+git clone git@github.com:mappe-2026/Millions.git
 cd millions
 ```
 
@@ -185,4 +185,4 @@ Both positive (happy path) and negative (error/edge case) tests are included. Te
 
 ## License
 
-This project is developed for educational purposes as part of IDATx2003 at NTNU.
+This project is developed for educational purposes as part of IDATT2003 at NTNU.
