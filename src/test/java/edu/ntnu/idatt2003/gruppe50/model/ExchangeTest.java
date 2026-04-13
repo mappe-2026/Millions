@@ -35,22 +35,22 @@ public class ExchangeTest {
 
   @Test
   void constructor_blankName_throwsException() {
-     assertThrows(IllegalArgumentException.class, () -> new Exchange("", List.of(aapl), new TransactionFactory()));
+    assertThrows(IllegalArgumentException.class, () -> new Exchange("", List.of(aapl), new TransactionFactory()));
   }
 
   @Test
   void constructor_nullStocks_throwsException() {
-     assertThrows(IllegalArgumentException.class, () -> new Exchange("Test", null, new TransactionFactory()));
+    assertThrows(IllegalArgumentException.class, () -> new Exchange("Test", null, new TransactionFactory()));
   }
 
   @Test
   void constructor_emptyList_throwsException() {
-     assertThrows(IllegalArgumentException.class, () -> new Exchange("Test", new ArrayList<>(), new TransactionFactory()));
+    assertThrows(IllegalArgumentException.class, () -> new Exchange("Test", new ArrayList<>(), new TransactionFactory()));
   }
 
   @Test
   void getName_returnsName() {
-     assertEquals("test", exchange.getName());
+    assertEquals("test", exchange.getName());
   }
 
   @Test

@@ -5,8 +5,8 @@ package edu.ntnu.idatt2003.gruppe50.observer;
  */
 public interface Observer {
 
-    /**
-     * Called when the observed subject changes state.
-     */
-    void update();
+  /**
+   * Called when the observed subject changes state.
+   */
+  void update();
 }
