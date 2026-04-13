@@ -1,193 +1,247 @@
 package edu.ntnu.idatt2003.gruppe50.view;
 
+import edu.ntnu.idatt2003.gruppe50.controller.NewGameController;
+import java.io.File;
+import java.math.BigDecimal;
+
+import edu.ntnu.idatt2003.gruppe50.util.Parse;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * View for creating a new game in the Millions stock simulator.
+ * Provides input fields for player name, starting capital, and stock data file.
+ */
 public class NewGameView {
+  private final Stage stage;
+  private File selectedFile;
+  private TextField nameField;
+  private TextField capitalField;
+  private Button startBtn;
+  private final NewGameController controller;
+  private final Label errorLabel = new Label();
 
-    private Stage stage;
-    private BorderPane root;
-    private List<File> selectedFiles = new ArrayList<>();
-    private TextField nameField;
-    private TextField capitalField;
-    //lager en list in case man skal utvide
-    //til å legge til flere filer i framtiden
+  /**
+   * Constructs a new NewGameView.
+   *
+   * @param stage      the primary stage used for displaying file dialogs
+   * @param controller the controller handling game startup logic
+   */
+  public NewGameView(Stage stage, NewGameController controller) {
+    this.stage = stage;
+    this.controller = controller;
+  }
 
-    public NewGameView(Stage stage) {
-        this.stage = stage;
-    }
+  /**
+   * Builds and returns the scene for the new game screen.
+   *
+   * @return the configured JavaFX scene
+   */
+  public Scene getScene() {
+    BorderPane root = new BorderPane();
+    root.getStyleClass().add("root-bg");
 
-    public Scene getScene() {
-        root = new BorderPane();
-        root.setStyle("-fx-background-color: #1C1C1C;");
+    StackPane center = new StackPane(createCardBox());
+    root.setCenter(center);
 
-        //Card
-        VBox cardBox = new VBox();
-        cardBox.setPrefWidth(860);
-        cardBox.setMaxWidth(860);
-        cardBox.setPrefHeight(420);
-        cardBox.setMaxHeight(420);
-        cardBox.setStyle("""
-                -fx-background-color: #2C2C2C;
-                -fx-background-radius: 12;
-        """);
-        cardBox.setAlignment(Pos.CENTER);
-        cardBox.setPadding(new Insets(40, 32, 40, 32));
-        cardBox.setSpacing(12);
+    Scene scene = new Scene(root, 1280, 900);
+    scene.getStylesheets().add(
+        getClass().getResource("/css/newGame.css").toExternalForm()
+    );
+    return scene;
+  }
 
+  private VBox createCardBox() {
+    VBox cardBox = new VBox();
+    cardBox.setPrefWidth(860);
+    cardBox.setMaxWidth(860);
+    cardBox.setPrefHeight(420);
+    cardBox.setMaxHeight(420);
+    cardBox.getStyleClass().add("card-box");
+    cardBox.setAlignment(Pos.CENTER);
+    cardBox.setPadding(new Insets(40, 32, 40, 32));
+    cardBox.setSpacing(12);
 
-        //Millions title
-        Label millionsLabel = new Label("Millions");
-        millionsLabel.setAlignment(Pos.TOP_CENTER);
-        millionsLabel.setStyle("""
-                -fx-font-size: 28px;
-                -fx-font-weight: bold;
-                -fx-text-fill: #FFFFFF;
-                """);
+    nameField = createTextField("Enter name...");
+    capitalField = createTextField("10 000kr");
+    startBtn = createStartButton();
+    errorLabel.getStyleClass().add("error-label");
+    errorLabel.setVisible(false);
 
-        //Trading Game subtitle
-        Label tradingGameLabel = new Label("Trading Game");
-        tradingGameLabel.setAlignment(Pos.TOP_CENTER);
-        tradingGameLabel.setStyle("""
-                -fx-font-size: 14;
-                -fx-text-fill: #888888;
-                """);
+    cardBox.getChildren().addAll(
+        createTitleBox(),
+        createInputBox("Player name", nameField),
+        createInputBox("Starting Capital", capitalField),
+        createFilePickerField(),
+        startBtn,
+        errorLabel
+    );
+    return cardBox;
+  }
 
-        //Title box
-        VBox titleBox = new VBox(2);
-        titleBox.setAlignment(Pos.CENTER);
-        titleBox.getChildren().addAll(millionsLabel, tradingGameLabel);
+  private VBox createTitleBox() {
+    // Millions title
+    Label millionsLabel = new Label("Millions");
+    millionsLabel.setAlignment(Pos.TOP_CENTER);
+    millionsLabel.getStyleClass().add("title-label");
 
-        //Input fields
-        VBox nameFieldBox = createInputField("Player name", "Enter name...");
-        VBox startCapitalBox = createInputField("Starting Capital", "10 000kr");
-        VBox filePickerBox = createFilePickerField("Enter .csv file...");
+    // Trading Game subtitle
+    Label tradingGameLabel = new Label("Trading Game");
+    tradingGameLabel.setAlignment(Pos.TOP_CENTER);
+    tradingGameLabel.getStyleClass().add("subtitle-label");
 
-        //Start game
-        Button startGameBtn = new Button("Start Game");
-        startGameBtn.setStyle("""
-            -fx-background-color: #2563EB;
-            -fx-text-fill: #FFFFFF;
-            -fx-background-radius: 8;
-            -fx-padding: 12;
-            -fx-font-size: 14px;
-            -fx-cursor: hand;
-        """);
-        startGameBtn.setMaxWidth(Double.MAX_VALUE);
+    // Title box
+    VBox titleBox = new VBox(2);
+    titleBox.setAlignment(Pos.CENTER);
+    titleBox.getChildren().addAll(millionsLabel, tradingGameLabel);
 
+    return titleBox;
+  }
 
+  private TextField createTextField(String placeholder) {
+    TextField textField = new TextField();
+    textField.setPromptText(placeholder);
+    textField.getStyleClass().add("input-field");
+    textField.textProperty().addListener((observable, oldValue, newValue) -> {
+      updateStartButton();
+    });
+    return textField;
+  }
 
-        cardBox.getChildren().addAll(titleBox, nameFieldBox, startCapitalBox, filePickerBox, startGameBtn);
+  private VBox createInputBox(String label, TextField field) {
+    VBox box = new VBox(4);
 
-        StackPane center = new StackPane(cardBox);
-        root.setCenter(center);
+    Label fieldLabel = new Label(label);
+    fieldLabel.getStyleClass().add("field-label");
 
-        return new Scene(root, 1280, 900);
-    }
+    box.getChildren().addAll(fieldLabel, field);
+    return box;
+  }
 
+  private VBox createFilePickerField() {
+    VBox box = new VBox(4);
+    box.setMaxWidth(Double.MAX_VALUE);
 
+    Label fieldLabel = new Label("Stock data file");
+    fieldLabel.getStyleClass().add("field-label");
 
+    Label fileNameLabel = new Label("Choose .csv file");
+    fileNameLabel.getStyleClass().add("file-name-label");
 
-    private VBox createInputField(String label, String placeholder) {
+    Region spacer = new Region();
+    HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        // Container
-        VBox box = new VBox(4);
+    HBox filePickerRow = new HBox(8);
+    filePickerRow.getStyleClass().add("file-picker-row");
+    filePickerRow.setAlignment(Pos.CENTER_LEFT);
+    filePickerRow.setMaxWidth(Double.MAX_VALUE);
+    filePickerRow.getChildren().addAll(fileNameLabel, spacer, createAddButton(fileNameLabel));
 
-        // Label
-        Label fieldLabel = new Label(label);
-        fieldLabel.setStyle("""
-            -fx-text-fill: #FFFFFF;
-            -fx-font-size: 14px;
-            """);
+    box.getChildren().addAll(fieldLabel, filePickerRow);
+    return box;
+  }
 
-        // Input field
-        TextField field = new TextField();
-        field.setPromptText(placeholder);
-        field.setStyle("""
-            -fx-background-color: #3C3C3C;
-            -fx-text-fill: #FFFFFF;
-            -fx-prompt-text-fill: #888888;
-            -fx-background-radius: 8;
-            -fx-padding: 10;
-            -fx-border-color: #444444;
-            -fx-border-radius: 8;
-            -fx-border-width: 1;
-            """);
-
-        box.getChildren().addAll(fieldLabel, field);
-        return box;
-    }
-
-    private VBox createFilePickerField(String labelText) {
-        VBox box = new VBox(4);
-        box.setMaxWidth(Double.MAX_VALUE);
-
-        Label fieldLabel = new Label(labelText);
-        fieldLabel.setStyle("""
-            -fx-text-fill: #FFFFFF;
-            -fx-font-size: 14px;
-            """);
-
-        HBox filePickerRow = new HBox(8);
-        filePickerRow.setStyle("""
-            -fx-background-color: #3C3C3C;
-            -fx-background-radius: 8;
-            -fx-padding: 10;
-            """);
-        filePickerRow.setAlignment(Pos.CENTER_LEFT);
-        filePickerRow.setMaxWidth(Double.MAX_VALUE);
-
-
-        Label fileNameLabel = new Label("Choose .csv file");
-        fileNameLabel.setStyle("-fx-text-fill: #888888;");
-        HBox.setHgrow(fileNameLabel, Priority.ALWAYS);
-
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        Button addButton = getAddButton(fileNameLabel);
-
-        filePickerRow.getChildren().addAll(fileNameLabel, spacer, addButton);
-        box.getChildren().addAll(fieldLabel, filePickerRow);
-        return box;
-    }
-
-    private Button getAddButton(Label fileNameLabel) {
-        Button addButton = new Button("+");
-        addButton.setStyle("""
-            -fx-background-color: #4C4C4C;
-            -fx-text-fill: #FFFFFF;
-            -fx-background-radius: 6;
-            -fx-border-color: transparent;
-            -fx-cursor: hand;
-            """);
-        addButton.setOnAction(e -> {
-            File file = handleFilePicker();
-            if (file != null) {
-                selectedFiles.add(file);
-                fileNameLabel.setText(file.getName());
-            }
-        });
-        return addButton;
-    }
-
-    private File handleFilePicker() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("CSV-filer", "*.csv")
+  private Button createStartButton() {
+    Button btn = new Button("Start Game");
+    btn.getStyleClass().add("button-disabled");
+    btn.setMaxWidth(Double.MAX_VALUE);
+    btn.setOnAction(e -> {
+      String error = validate();
+      if (error != null) {
+        showError(error);
+      } else {
+        errorLabel.setVisible(false);
+        controller.onStartGame(
+            nameField.getText(),
+            capitalField.getText(),
+            selectedFile
         );
-        return fileChooser.showOpenDialog(stage);
+      }
+    });
+    return btn;
+  }
+
+  private Button createAddButton(Label fileNameLabel) {
+    Button addButton = new Button("+");
+    addButton.getStyleClass().add("add-button");
+    addButton.setOnAction(e -> {
+      File file = handleFilePicker();
+      if (file != null) {
+        selectedFile = file;
+        fileNameLabel.setText(file.getName());
+        updateStartButton();
+      }
+    });
+    return addButton;
+  }
+
+  private File handleFilePicker() {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.getExtensionFilters().add(
+        new FileChooser.ExtensionFilter("CSV-filer", "*.csv")
+    );
+    return fileChooser.showOpenDialog(stage);
+  }
+
+  private void updateStartButton() {
+    if (startBtn == null) {
+      return;
     }
+
+    boolean allFilled = !nameField.getText().isBlank()
+        && isValidCapital(capitalField.getText())
+        && selectedFile != null;
+
+    startBtn.getStyleClass().removeAll("button-active", "button-disabled");
+
+    if (allFilled) {
+      startBtn.getStyleClass().add("button-active");
+      errorLabel.setVisible(false);
+    } else {
+      startBtn.getStyleClass().add("button-disabled");
+    }
+  }
+
+  private void showError(String message) {
+    errorLabel.setText(message);
+    errorLabel.setVisible(true);
+  }
+
+  private String validate() {
+    if (nameField.getText().isBlank()) {
+      return "Please enter your player name";
+    }
+    if (capitalField.getText().isBlank()) {
+      return "Please enter starting capital";
+    }
+    if (!isValidCapital(capitalField.getText())) {
+      return "Starting capital has to be a number";
+    }
+    if (selectedFile == null) {
+      return "You must enter a file";
+    }
+    return null;
+  }
+
+  private boolean isValidCapital(String input) {
+    try {
+      Parse.parseBigDecimal(input);
+      return true;
+    } catch (IllegalArgumentException e) {
+      return false;
+    }
+  }
 
 }
