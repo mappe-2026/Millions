@@ -85,6 +85,14 @@ public class Validate {
     }
   }
 
+  /**
+   * Validates the input parameters for starting a new game.
+   *
+   * @param playerName the name of the player, must not be blank
+   * @param startingCapital the starting capital, must be a positive value
+   * @param stockFile the file containing stock data, must not be null
+   * @throws IllegalArgumentException if any of the parameters are invalid
+   */
   public static void validateInput(String playerName, BigDecimal startingCapital, File stockFile) {
     notBlank(playerName, "Player name");
     positive(startingCapital, "Starting capital");
