@@ -1,8 +1,7 @@
-package edu.ntnu.idatt2003.gruppe50.view;
+package edu.ntnu.idatt2003.gruppe50.view.pages;
 
 import edu.ntnu.idatt2003.gruppe50.controller.NewGameController;
 import java.io.File;
-import java.math.BigDecimal;
 
 import edu.ntnu.idatt2003.gruppe50.util.Parse;
 import javafx.geometry.Insets;

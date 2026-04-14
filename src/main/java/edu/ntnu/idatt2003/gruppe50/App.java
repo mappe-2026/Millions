@@ -1,7 +1,7 @@
 package edu.ntnu.idatt2003.gruppe50;
 
 import edu.ntnu.idatt2003.gruppe50.controller.NewGameController;
-import edu.ntnu.idatt2003.gruppe50.view.NewGameView;
+import edu.ntnu.idatt2003.gruppe50.view.pages.NewGameView;
 import javafx.application.Application;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
