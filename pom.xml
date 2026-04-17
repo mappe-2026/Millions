@@ -36,7 +36,7 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-          <mainClass>edu.ntnu.idatt2003.gruppe50.view.pages.GameView</mainClass>
+          <mainClass>edu.ntnu.idatt2003.gruppe50.App</mainClass>
         </configuration>
       </plugin>
 

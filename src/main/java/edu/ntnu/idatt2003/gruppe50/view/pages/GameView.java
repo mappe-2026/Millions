@@ -7,10 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class GameView extends Application {
+public class GameView{
 
-  @Override
-  public void start(Stage stage) {
+  public Scene getScene() {
     NavigationManager navManager = new NavigationManager();
     NavBar navBar = new NavBar(navManager::navigateTo);
 
@@ -22,11 +21,6 @@ public class GameView extends Application {
 
     Scene scene = new Scene(root, 600, 400);
 
-    stage.setTitle("Millions");
-    stage.setScene(scene);
-    stage.show();
+    return scene;
   }
-
-
-
 }

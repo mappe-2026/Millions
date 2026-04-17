@@ -1,6 +1,9 @@
 package edu.ntnu.idatt2003.gruppe50;
 
 import edu.ntnu.idatt2003.gruppe50.controller.NewGameController;
+import edu.ntnu.idatt2003.gruppe50.model.Exchange;
+import edu.ntnu.idatt2003.gruppe50.model.Player;
+import edu.ntnu.idatt2003.gruppe50.view.pages.GameView;
 import edu.ntnu.idatt2003.gruppe50.view.pages.NewGameView;
 import javafx.application.Application;
 import javafx.scene.layout.BorderPane;
@@ -13,6 +16,7 @@ import javafx.stage.Stage;
 public class App extends Application {
 
   private BorderPane mainLayout;
+  private Stage stage;
 
   public static void main(String[] args) {
     launch(args);
@@ -20,9 +24,15 @@ public class App extends Application {
 
   @Override
   public void start(Stage stage) throws Exception {
-    NewGameController controller = new NewGameController();
+    this.stage = stage;
+    NewGameController controller = new NewGameController(this);
     NewGameView newGame = new NewGameView(stage, controller);
     stage.setScene(newGame.getScene());
     stage.show();
+  }
+
+  public void switchToGame(Player player, Exchange exchange) {
+    GameView gameView = new GameView();
+    stage.setScene(gameView.getScene());
   }
 }
