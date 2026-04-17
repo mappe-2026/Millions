@@ -32,7 +32,7 @@ public class App extends Application {
   }
 
   public void switchToGame(Player player, Exchange exchange) {
-    GameView gameView = new GameView();
+    GameView gameView = new GameView(player, exchange);
     stage.setScene(gameView.getScene());
   }
 }
