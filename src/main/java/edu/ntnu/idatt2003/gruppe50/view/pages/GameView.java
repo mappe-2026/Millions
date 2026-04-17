@@ -2,10 +2,8 @@ package edu.ntnu.idatt2003.gruppe50.view.pages;
 
 import edu.ntnu.idatt2003.gruppe50.view.components.NavBar;
 import edu.ntnu.idatt2003.gruppe50.view.navigation.NavigationManager;
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 
 public class GameView{
 
@@ -17,10 +15,8 @@ public class GameView{
     root.setTop(navBar);
     root.setCenter(navManager.getContentArea());
 
-    navManager.navigateTo("dashboard");
+    navManager.navigateTo("Dashboard");
 
-    Scene scene = new Scene(root, 600, 400);
-
-    return scene;
+    return new Scene(root, 600, 400);
   }
 }
