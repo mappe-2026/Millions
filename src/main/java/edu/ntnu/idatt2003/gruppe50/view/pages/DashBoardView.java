@@ -17,6 +17,6 @@ public class DashBoardView extends BorderPane implements Page {
 
   @Override
   public String getTitle() {
-    return "dashboard";
+    return "Dashboard";
   }
 }
