@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.gruppe50.view.navigation;
 
+import edu.ntnu.idatt2003.gruppe50.view.pages.DashBoardView;
 import edu.ntnu.idatt2003.gruppe50.view.pages.Page;
 import javafx.scene.layout.StackPane;
 
@@ -17,6 +18,7 @@ public class NavigationManager {
     contentArea.getStyleClass().add("content-area");
 
     // register the different pages
+    registerPage(new DashBoardView());
 
   }
 
