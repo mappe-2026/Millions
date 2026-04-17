@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.gruppe50.controller;
 
+import edu.ntnu.idatt2003.gruppe50.App;
 import edu.ntnu.idatt2003.gruppe50.io.CSVFileHandler;
 import edu.ntnu.idatt2003.gruppe50.model.Exchange;
 import edu.ntnu.idatt2003.gruppe50.model.Player;
@@ -18,6 +19,13 @@ import java.util.List;
  */
 public class NewGameController {
 
+  private final App app;
+
+  public NewGameController(App app) {
+    this.app = app;
+  }
+
+
   /**
    * Initializes and starts a new game with the provided input.
    * Parses the capital string, validates all input, loads stocks
@@ -31,9 +39,12 @@ public class NewGameController {
   public void onStartGame(String playerName, String capital, File stockFile) {
     BigDecimal startingCapital = Parse.parseBigDecimal(capital);
     Validate.validateInput(playerName, startingCapital, stockFile);
+
     List<Stock> stocks = loadStocks(stockFile);
     Player player = createPlayer(playerName, startingCapital);
     Exchange exchange = createExchange(stocks);
+
+    app.switchToGame(player, exchange);
   }
 
   private List<Stock> loadStocks(File stockFile) {
