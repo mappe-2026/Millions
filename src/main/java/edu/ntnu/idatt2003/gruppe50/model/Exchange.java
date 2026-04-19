@@ -210,4 +210,12 @@ public class Exchange extends Observable {
         .toList();
   }
 
+  /**
+   * Returns a list of all the stocks in the exchange.
+   * @return list with all stocks
+   */
+  public List<Stock> getStocks() {
+    return new ArrayList<>(stockMap.values());
+  }
+
 }
