@@ -3,11 +3,15 @@ package edu.ntnu.idatt2003.gruppe50.view.pages;
 import edu.ntnu.idatt2003.gruppe50.model.Player;
 import edu.ntnu.idatt2003.gruppe50.model.Portfolio;
 import edu.ntnu.idatt2003.gruppe50.model.Share;
+import edu.ntnu.idatt2003.gruppe50.view.components.LineChartView;
 import edu.ntnu.idatt2003.gruppe50.view.components.ShareCardFactory;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 public class PortfolioView extends VBox implements Page {
 
@@ -38,8 +42,14 @@ public class PortfolioView extends VBox implements Page {
       shareCardContainer.getChildren().add(ShareCardFactory.createShareCard(share));
     }
 
+    // Add temporary net worth line chart
+    LineChartView netWorthChart = new LineChartView("Week", "Net Worth");
+    List<BigDecimal> history = List.of(BigDecimal.ONE, BigDecimal.TWO);
+    netWorthChart.display("Net Worth Chart", history);
+    topSection.getChildren().add(netWorthChart.getChart());
+
     // Add the header and share container to the portfolio view
-    this.getChildren().add(topSection);
+    this.getChildren().addAll(topSection, shareCardContainer);
   }
 
   @Override
