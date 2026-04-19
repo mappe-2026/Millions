@@ -1,8 +1,8 @@
 package edu.ntnu.idatt2003.gruppe50.controller;
 
-import edu.ntnu.idatt2003.gruppe50.model.Exchange;
-import edu.ntnu.idatt2003.gruppe50.model.Player;
-import edu.ntnu.idatt2003.gruppe50.model.Stock;
+import edu.ntnu.idatt2003.gruppe50.domain.market.Exchange;
+import edu.ntnu.idatt2003.gruppe50.domain.portfolio.Player;
+import edu.ntnu.idatt2003.gruppe50.domain.market.Stock;
 
 import java.util.ArrayList;
 import java.util.List;

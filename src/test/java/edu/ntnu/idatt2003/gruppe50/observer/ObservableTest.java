@@ -1,8 +1,9 @@
 package edu.ntnu.idatt2003.gruppe50.observer;
 
-import edu.ntnu.idatt2003.gruppe50.model.Exchange;
-import edu.ntnu.idatt2003.gruppe50.model.Stock;
-import edu.ntnu.idatt2003.gruppe50.transaction.TransactionFactory;
+import edu.ntnu.idatt2003.gruppe50.domain.market.Exchange;
+import edu.ntnu.idatt2003.gruppe50.domain.market.Stock;
+import edu.ntnu.idatt2003.gruppe50.domain.trade.TransactionFactory;
+import edu.ntnu.idatt2003.gruppe50.shared.observer.Observer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

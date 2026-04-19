@@ -1,13 +1,13 @@
 package edu.ntnu.idatt2003.gruppe50.controller;
 
 import edu.ntnu.idatt2003.gruppe50.App;
-import edu.ntnu.idatt2003.gruppe50.io.CSVFileHandler;
-import edu.ntnu.idatt2003.gruppe50.model.Exchange;
-import edu.ntnu.idatt2003.gruppe50.model.Player;
-import edu.ntnu.idatt2003.gruppe50.model.Stock;
-import edu.ntnu.idatt2003.gruppe50.transaction.TransactionFactory;
-import edu.ntnu.idatt2003.gruppe50.util.Parse;
-import edu.ntnu.idatt2003.gruppe50.util.Validate;
+import edu.ntnu.idatt2003.gruppe50.infrastructure.CSVFileHandler;
+import edu.ntnu.idatt2003.gruppe50.domain.market.Exchange;
+import edu.ntnu.idatt2003.gruppe50.domain.portfolio.Player;
+import edu.ntnu.idatt2003.gruppe50.domain.market.Stock;
+import edu.ntnu.idatt2003.gruppe50.domain.trade.TransactionFactory;
+import edu.ntnu.idatt2003.gruppe50.shared.Parse;
+import edu.ntnu.idatt2003.gruppe50.shared.Validate;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
