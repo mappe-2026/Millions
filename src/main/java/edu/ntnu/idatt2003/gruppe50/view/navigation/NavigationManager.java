@@ -1,7 +1,10 @@
 package edu.ntnu.idatt2003.gruppe50.view.navigation;
 
+import edu.ntnu.idatt2003.gruppe50.model.Exchange;
+import edu.ntnu.idatt2003.gruppe50.model.Player;
 import edu.ntnu.idatt2003.gruppe50.view.pages.DashBoardView;
 import edu.ntnu.idatt2003.gruppe50.view.pages.Page;
+import edu.ntnu.idatt2003.gruppe50.view.pages.PortfolioView;
 import javafx.scene.layout.StackPane;
 
 import java.util.HashMap;
@@ -13,12 +16,13 @@ public class NavigationManager {
   private final Map<String, Page> pages = new HashMap<>();
   private String currentPage;
 
-  public NavigationManager() {
+  public NavigationManager(Player player, Exchange exchange) {
     contentArea = new StackPane();
     contentArea.getStyleClass().add("content-area");
 
     // register the different pages
     registerPage(new DashBoardView());
+    registerPage(new PortfolioView(player));
 
   }
 
