@@ -6,6 +6,7 @@ import edu.ntnu.idatt2003.gruppe50.transaction.TransactionFactory;
 import edu.ntnu.idatt2003.gruppe50.util.Validate;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
