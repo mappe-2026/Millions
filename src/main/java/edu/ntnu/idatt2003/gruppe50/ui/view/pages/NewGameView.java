@@ -1,6 +1,6 @@
 package edu.ntnu.idatt2003.gruppe50.ui.view.pages;
 
-import edu.ntnu.idatt2003.gruppe50.controller.NewGameController;
+import edu.ntnu.idatt2003.gruppe50.ui.controller.NewGameController;
 import java.io.File;
 
 import edu.ntnu.idatt2003.gruppe50.shared.Parse;

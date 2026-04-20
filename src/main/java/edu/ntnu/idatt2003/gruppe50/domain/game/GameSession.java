@@ -94,6 +94,14 @@ public final class GameSession {
     return gameId;
   }
 
+  public Player getPlayer() {
+    return player;
+  }
+
+  public Exchange getExchange() {
+    return exchange;
+  }
+
   private void ensureActive() {
     if (state == GameSessionState.FINISHED) {
       throw new GameSessionFinishedException();

@@ -1,6 +1,6 @@
-package edu.ntnu.idatt2003.gruppe50.controller;
+package edu.ntnu.idatt2003.gruppe50.ui.controller;
 
-import edu.ntnu.idatt2003.gruppe50.App;
+import edu.ntnu.idatt2003.gruppe50.application.StartGameSessionUseCase;
 import edu.ntnu.idatt2003.gruppe50.infrastructure.CSVFileHandler;
 import edu.ntnu.idatt2003.gruppe50.domain.market.Exchange;
 import edu.ntnu.idatt2003.gruppe50.domain.portfolio.Player;
@@ -11,18 +11,21 @@ import edu.ntnu.idatt2003.gruppe50.shared.Validate;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Controller responsible for initializing a new game session.
  * Parses and validates user input before creating the necessary
  * game objects ({@link Player} and {@link Exchange}).
  */
-public class NewGameController {
+public final class NewGameController {
+  private final StartGameSessionUseCase startGameSession;
+  private final Consumer<UUID> onGameStarted;
 
-  private final App app;
-
-  public NewGameController(App app) {
-    this.app = app;
+  public NewGameController(StartGameSessionUseCase startGameSession, Consumer<UUID> onGameStarted) {
+    this.startGameSession= startGameSession;
+    this.onGameStarted = onGameStarted;
   }
 
 
@@ -44,7 +47,11 @@ public class NewGameController {
     Player player = createPlayer(playerName, startingCapital);
     Exchange exchange = createExchange(stocks);
 
-    app.switchToGame(player, exchange);
+    UUID gameId = startGameSession
+        .execute(new StartGameSessionUseCase.Request(player, exchange))
+        .gameId();
+
+    onGameStarted.accept(gameId);
   }
 
   private List<Stock> loadStocks(File stockFile) {
