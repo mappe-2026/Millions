@@ -39,14 +39,14 @@ public class Sale extends Transaction {
     if (isCommitted()) {
       return;
     }
-    if (!player.getPortfolio().contains(getShare())) {
+    if (!player.getPortfolio().contains(getShare().getShareId())) {
       throw new IllegalArgumentException("Cannot sell a share you don't own");
     }
 
     BigDecimal total = getCalculator().calculateTotal();
 
     player.addMoney(total);
-    player.getPortfolio().removeShare(getShare());
+    player.getPortfolio().removeShare(getShare().getShareId());
     player.getTransactionArchive().add(this);
     markCommitted();
   }

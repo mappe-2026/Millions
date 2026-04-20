@@ -148,13 +148,13 @@ public class ExchangeTest {
   @Test
   void sell_nullPlayer_throwsException() {
     Share share = new Share(exchange.getStock("AAPL"), new BigDecimal("1"), new BigDecimal("100"));
-    assertThrows(IllegalArgumentException.class, () -> exchange.sell(share, null));
+    assertThrows(IllegalArgumentException.class, () -> exchange.sell(share.getShareId(), null));
   }
 
   @Test
   void sell_validSale_returnsTransaction() {
     exchange.buy("AAPL", bd(1), player);
-    Transaction t = exchange.sell(player.getPortfolio().getShares("AAPL").getFirst(), player);
+    Transaction t = exchange.sell(player.getPortfolio().getShares("AAPL").getFirst().getShareId(), player);
     assertNotNull(t);
     assertInstanceOf(Sale.class, t);
   }

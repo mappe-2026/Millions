@@ -4,8 +4,7 @@ import edu.ntnu.idatt2003.gruppe50.domain.trade.calculator.SaleCalculator;
 import edu.ntnu.idatt2003.gruppe50.shared.Validate;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -14,13 +13,13 @@ import java.util.List;
  * The portfolio maintains a collection of {@link Share} objects.
  */
 public class Portfolio {
-  private final List<Share> shares;
+  private final Map<UUID, Share> shares;
 
   /**
    * Creates a new {@code Portfolio} with an empty list.
    */
   public Portfolio() {
-    this.shares = new ArrayList<>();
+    this.shares = new HashMap<>();
   }
 
   /**
@@ -32,19 +31,19 @@ public class Portfolio {
    */
   public boolean addShare(Share share) {
     Validate.notNull(share, "Share");
-    return shares.add(share);
+    return shares.putIfAbsent(share.getShareId(), share) == null;
   }
 
   /**
    * Removes a  share from the portfolio.
    *
-   * @param share The share to remove
+   * @param shareId The share to remove
    * @return {@code true} if the share was removed successfully,
    * {@code false} if the share could not be removed
    */
-  public boolean removeShare(Share share) {
-    Validate.notNull(share, "Share");
-    return shares.remove(share);
+  public boolean removeShare(UUID shareId) {
+    Validate.notNull(shareId, "Share id");
+    return shares.remove(shareId) != null;
   }
 
   /**
@@ -53,7 +52,7 @@ public class Portfolio {
    * @return an unmodifiable list of the shares in this portfolio
    */
   public List<Share> getShares() {
-    return List.copyOf(shares);
+    return List.copyOf(shares.values());
   }
 
 
@@ -67,9 +66,16 @@ public class Portfolio {
    */
   public List<Share> getShares(String symbol) {
     Validate.notBlank(symbol, "Symbol");
-    return shares.stream()
+    return shares.values().stream()
         .filter(share -> share.getStock().getSymbol().equalsIgnoreCase(symbol))
         .toList();
+  }
+
+  public Share getShare(UUID shareId) {
+    Validate.notNull(shareId, "Share id");
+    Share share = shares.get(shareId);
+    if (share == null) throw new NoSuchElementException("No share by that id: " + shareId);
+    return share;
   }
 
   /**
@@ -83,9 +89,14 @@ public class Portfolio {
    */
   public boolean contains(Share shareToCheck) {
     Validate.notNull(shareToCheck, "Share to check");
-    return shares.stream()
+    return shares.values().stream()
         .anyMatch(share ->
-            share.getStock().equals(shareToCheck.getStock()));
+            share.getShareId().equals(shareToCheck.getShareId()));
+  }
+
+  public boolean contains(UUID shareId) {
+    Validate.notNull(shareId, "Share id");
+    return shares.get(shareId) != null;
   }
 
   /**
@@ -98,7 +109,7 @@ public class Portfolio {
    * @return the portfolio net worth as {@link BigDecimal}
    */
   public BigDecimal getNetWorth() {
-    return shares.stream()
+    return shares.values().stream()
         .map(a -> new SaleCalculator(a).calculateTotal())
         // First parameter is start value, second parameter is the accumulative value
         .reduce(BigDecimal.ZERO, BigDecimal::add);

@@ -8,11 +8,7 @@ import edu.ntnu.idatt2003.gruppe50.domain.trade.TransactionFactory;
 import edu.ntnu.idatt2003.gruppe50.shared.Validate;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -148,15 +144,17 @@ public class Exchange extends Observable {
   /**
    * Sells a share the player holds.
    *
-   * @param share  the share to be sold
+   * @param shareId  the share to be sold
    * @param player the player
    * @return a sale
    * @throws IllegalArgumentException if {@code share} or {@code player} is null
    */
-  public Transaction sell(Share share, Player player) {
-    Validate.notNull(share, "Share");
+  public Transaction sell(UUID shareId, Player player) {
+    Validate.notNull(shareId, "Share id");
     Validate.notNull(player, "Player");
 
+
+    Share share = player.getPortfolio().getShare(shareId);
     Transaction t = factory.createSale(share, this.week);
     t.commit(player);
 

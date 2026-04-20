@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,7 +55,7 @@ class PortfolioTest {
     int sizeBefore = portfolio.getShares().size();
 
     portfolio.addShare(share1);
-    boolean result = portfolio.removeShare(share1);
+    boolean result = portfolio.removeShare(share1.getShareId());
 
     assertTrue(result);
     assertEquals(sizeBefore, portfolio.getShares().size());
@@ -68,7 +70,7 @@ class PortfolioTest {
   void removeShare_shareNotInPortfolio_returnsFalse() {
     int sizeBefore = portfolio.getShares().size();
 
-    boolean result = portfolio.removeShare(share1);
+    boolean result = portfolio.removeShare(share1.getShareId());
 
     assertFalse(result);
     assertEquals(sizeBefore, portfolio.getShares().size());
@@ -113,9 +115,15 @@ class PortfolioTest {
     portfolio.addShare(share1);
     portfolio.addShare(share2);
 
-    List<Share> KOGShares = List.of(share1, share2);
+    List<Share> expected = List.of(share1, share2);
+    List<Share> actual = portfolio.getShares("KOG");
 
-    assertEquals(KOGShares, portfolio.getShares("KOG"));
+    Comparator<Share> byId = Comparator.comparing(Share::getShareId);
+
+    assertEquals(
+        expected.stream().sorted(byId).toList(),
+        actual.stream().sorted(byId).toList()
+    );
   }
 
   @Test
@@ -131,10 +139,10 @@ class PortfolioTest {
   }
 
   @Test
-  void contains_findsDifferentShareWithSameStock_returnsTrue() {
+  void contains_findsDifferentShareWithSameStock_returnsFalse() {
     portfolio.addShare(share2);
 
-    assertTrue(portfolio.contains(share1));
+    assertFalse(portfolio.contains(share1));
   }
 
   @Test
@@ -152,7 +160,13 @@ class PortfolioTest {
   @Test
   void contains_nullShare_throwsException() {
     assertThrows(IllegalArgumentException.class,
-        () -> portfolio.contains(null));
+        () -> portfolio.contains((Share) null));
+  }
+
+  @Test
+  void contains_nullUUID_throwsException() {
+    assertThrows(IllegalArgumentException.class,
+        () -> portfolio.contains((UUID) null));
   }
 
   @Test

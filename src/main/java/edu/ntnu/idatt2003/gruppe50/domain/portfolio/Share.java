@@ -4,6 +4,7 @@ import edu.ntnu.idatt2003.gruppe50.domain.market.Stock;
 import edu.ntnu.idatt2003.gruppe50.shared.Validate;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * Represents a holding of a specific stock.
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
  * </p>
  */
 public class Share {
+  private final UUID shareId;
   private final Stock stock;
   private final BigDecimal quantity;
   private final BigDecimal purchasePrice;
@@ -26,6 +28,7 @@ public class Share {
    * @throws IllegalArgumentException if any argument is null, zero or negative.
    */
   public Share(Stock stock, BigDecimal quantity, BigDecimal purchasePrice) {
+    shareId = UUID.randomUUID();
     Validate.notNull(stock, "Stock");
     Validate.positive(quantity, "Quantity");
     Validate.positive(purchasePrice, "Purchase price");
@@ -33,6 +36,10 @@ public class Share {
     this.stock = stock;
     this.quantity = quantity;
     this.purchasePrice = purchasePrice;
+  }
+
+  public UUID getShareId() {
+    return shareId;
   }
 
   /**

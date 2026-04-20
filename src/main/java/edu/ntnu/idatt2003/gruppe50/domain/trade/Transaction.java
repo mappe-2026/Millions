@@ -19,6 +19,7 @@ public abstract class Transaction {
   private final int week;
   private final TransactionCalculator calculator;
   private boolean committed;
+  // A good idea is that the transaction can be shown in the line chart, so that you can see when you bought and sold.
 
   /**
    * Creates a new {@code Transaction}.
