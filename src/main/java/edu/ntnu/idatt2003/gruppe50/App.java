@@ -4,7 +4,9 @@ import edu.ntnu.idatt2003.gruppe50.application.*;
 import edu.ntnu.idatt2003.gruppe50.domain.game.GameSession;
 import edu.ntnu.idatt2003.gruppe50.domain.repository.GameSessionRepository;
 import edu.ntnu.idatt2003.gruppe50.infrastructure.repository.InMemoryGameSessionRepository;
+import edu.ntnu.idatt2003.gruppe50.ui.controller.GameController;
 import edu.ntnu.idatt2003.gruppe50.ui.controller.NewGameController;
+import edu.ntnu.idatt2003.gruppe50.ui.controller.PortfolioQueryController;
 import edu.ntnu.idatt2003.gruppe50.ui.view.pages.GameView;
 import edu.ntnu.idatt2003.gruppe50.ui.view.pages.NewGameView;
 import javafx.application.Application;
@@ -25,6 +27,7 @@ public class App extends Application {
   private final BuyShareUseCase buyShare = new BuyShareUseCase(sessions);
   private final SellShareUseCase sellShare = new SellShareUseCase(sessions);
   private final AdvanceWeekUseCase advanceWeek = new AdvanceWeekUseCase(sessions);
+  private final GetPortfolioUseCase getPortfolio = new GetPortfolioUseCase(sessions);
 
   public static void main(String[] args) {
     launch(args);
@@ -42,8 +45,10 @@ public class App extends Application {
   public void switchToGame(UUID gameId) {
     loadGameSession.execute(new LoadGameSessionUseCase.Request(gameId));
     GameSession session = sessions.findById(gameId).orElseThrow(GameSessionNotFoundException::new);
+    GameController gameController = new GameController(session.getGameId(), buyShare, sellShare, advanceWeek);
+    PortfolioQueryController portfolioQueryController = new PortfolioQueryController(gameId, getPortfolio);
 
-    GameView gameView = new GameView(session.getPlayer(), session.getExchange());
+    GameView gameView = new GameView(gameController, portfolioQueryController);
     stage.setScene(gameView.getScene());
   }
 }

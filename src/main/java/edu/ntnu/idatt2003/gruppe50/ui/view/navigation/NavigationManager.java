@@ -1,40 +1,23 @@
 package edu.ntnu.idatt2003.gruppe50.ui.view.navigation;
 
-import edu.ntnu.idatt2003.gruppe50.domain.market.Exchange;
-import edu.ntnu.idatt2003.gruppe50.domain.portfolio.Player;
-import edu.ntnu.idatt2003.gruppe50.ui.view.pages.DashBoardView;
 import edu.ntnu.idatt2003.gruppe50.ui.view.pages.Page;
-import edu.ntnu.idatt2003.gruppe50.ui.view.pages.PortfolioView;
 import javafx.scene.layout.StackPane;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Supplier;
 
-public class NavigationManager {
+public final class NavigationManager {
 
-  private final StackPane contentArea;
-  private final Map<String, Page> pages = new HashMap<>();
-  private String currentPage;
+  private final StackPane contentArea = new StackPane();
+  private final Map<PageId, Supplier<Page>> pageFactories;
+  private final Map<PageId, Page> pages = new EnumMap<>(PageId.class);
 
-  public NavigationManager(Player player, Exchange exchange) {
-    contentArea = new StackPane();
-    contentArea.getStyleClass().add("content-area");
-
-    // register the different pages
-    registerPage(new DashBoardView());
-    registerPage(new PortfolioView(player));
-
+  public NavigationManager(Map<PageId, Supplier<Page>> pageFactories) {
+    this.pageFactories = pageFactories;
   }
 
-  private void registerPage(Page page) {
-    pages.put(page.getTitle(), page);
-  }
-
-  public void navigateTo(String title) {
-    if (title.equals(currentPage)) return;
-    currentPage = title;
-
-    Page page = pages.get(title);
+  public void navigateTo(PageId id) {
+    Page page = pages.computeIfAbsent(id, k -> pageFactories.get(k).get());
     if (page != null) {
       contentArea.getChildren().setAll(page.getView());
     }

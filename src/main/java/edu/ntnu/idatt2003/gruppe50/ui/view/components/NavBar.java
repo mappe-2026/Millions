@@ -1,5 +1,6 @@
 package edu.ntnu.idatt2003.gruppe50.ui.view.components;
 
+import edu.ntnu.idatt2003.gruppe50.ui.view.navigation.PageId;
 import javafx.css.PseudoClass;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -8,13 +9,13 @@ import javafx.scene.layout.Region;
 
 public class NavBar extends HBox {
   private static final PseudoClass ACTIVE = PseudoClass.getPseudoClass("active-nav");
-  private static final String[] NAV_ITEMS = {"Dashboard", "Market", "Portfolio", "Transactions"};
+  private static final PageId[] NAV_ITEMS = {PageId.DASHBOARD, PageId.MARKET, PageId.PORTFOLIO, PageId.TRANSACTIONS};
 
   /**
    * Inner interface to listen for nav-bar clicks.
    */
   public interface NavListener {
-    void onNavSelectedItem(String item);
+    void onNavSelectedItem(PageId item);
   }
 
   // I don't know how the wireframe looks yet but this is a good starter layout.
@@ -29,7 +30,7 @@ public class NavBar extends HBox {
     HBox navLinks = new HBox(4);
     navLinks.getStyleClass().add("nav-links");
 
-    for (String item : NAV_ITEMS) {
+    for (PageId item : NAV_ITEMS) {
       Button btn = createNavButton(item, navLinks, listener);
       navLinks.getChildren().add(btn);
     }
@@ -37,8 +38,8 @@ public class NavBar extends HBox {
     this.getChildren().addAll(logo, spacer, navLinks);
   }
 
-  private Button createNavButton(String label, HBox navLinks, NavListener listener) {
-    Button btn = new Button(label);
+  private Button createNavButton(PageId pageId, HBox navLinks, NavListener listener) {
+    Button btn = new Button(pageId.getLabel());
     btn.getStyleClass().add("nav-button");
 
     btn.setOnAction(e -> {
@@ -51,7 +52,7 @@ public class NavBar extends HBox {
       // Mark the clicked button as active
       btn.pseudoClassStateChanged(ACTIVE, true);
       // Notify the nav manager
-      listener.onNavSelectedItem(label);
+      listener.onNavSelectedItem(pageId);
     });
 
     return btn;

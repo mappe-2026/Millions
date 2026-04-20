@@ -1,10 +1,9 @@
 package edu.ntnu.idatt2003.gruppe50.ui.view.pages;
 
-import edu.ntnu.idatt2003.gruppe50.domain.portfolio.Player;
-import edu.ntnu.idatt2003.gruppe50.domain.portfolio.Portfolio;
-import edu.ntnu.idatt2003.gruppe50.domain.portfolio.Share;
+import edu.ntnu.idatt2003.gruppe50.ui.controller.GameController;
+import edu.ntnu.idatt2003.gruppe50.ui.controller.PortfolioQueryController;
+import edu.ntnu.idatt2003.gruppe50.ui.model.PortfolioData;
 import edu.ntnu.idatt2003.gruppe50.ui.view.components.LineChartView;
-import edu.ntnu.idatt2003.gruppe50.ui.view.components.ShareCardFactory;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -15,13 +14,13 @@ import java.util.List;
 
 public class PortfolioView extends VBox implements Page {
 
-  public PortfolioView(Player player) {
-    Portfolio portfolio = player.getPortfolio();
+  public PortfolioView(PortfolioQueryController queryController, GameController gameController) {
+    PortfolioData portfolio = queryController.getPortfolio();
 
     // Make label for the different player values
-    Label portfolioValueLabel = new Label(portfolio.getNetWorth().toString());
-    Label playerCashLabel = new Label(player.getMoney().toString());
-    Label netWorthLabel = new Label(player.getNetWorth().toString());
+    Label portfolioValueLabel = new Label(portfolio.portfolioValue().toString());
+    Label playerCashLabel = new Label(portfolio.cash().toString());
+    Label netWorthLabel = new Label(portfolio.netWorth().toString());
 
     // Make cards for the player information
     VBox portfolioValueCard = new VBox(new Label("Portfolio value:"), portfolioValueLabel);
@@ -38,9 +37,9 @@ public class PortfolioView extends VBox implements Page {
     VBox shareCardContainer = new VBox();
 
     // Populate the container with share cards
-    for (Share share : portfolio.getShares()) {
-      shareCardContainer.getChildren().add(ShareCardFactory.createShareCard(share));
-    }
+//    for (ShareData share : portfolio.shares()) {
+//      shareCardContainer.getChildren().add(ShareCardFactory.createShareCard(share));
+//    }
 
     // Add temporary net worth line chart
     LineChartView netWorthChart = new LineChartView("Week", "Net Worth");
