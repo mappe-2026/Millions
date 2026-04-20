@@ -16,9 +16,10 @@ public final class StartGameSessionUseCase {
 
   public Response execute(Request request) {
     GameSession session = GameSession.createNew(request.player(), request.exchange());
-    return new Response(session.getGameId(), session);
+    repository.save(session);
+    return new Response(session.getGameId());
   }
 
   public record Request(Player player, Exchange exchange) {}
-  public record Response(UUID gameId, GameSession gameSession) {}
+  public record Response(UUID gameId) {}
 }

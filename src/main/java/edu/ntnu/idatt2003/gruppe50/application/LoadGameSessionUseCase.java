@@ -15,7 +15,7 @@ public final class LoadGameSessionUseCase {
 
   public Response execute(Request request) {
     GameSession session = repository.findById(request.gameId())
-        .orElseThrow(() -> new IllegalArgumentException("Game session not found"));
+        .orElseThrow(GameSessionNotFoundException::new);
 
     session.markOpened();
     repository.save(session);
