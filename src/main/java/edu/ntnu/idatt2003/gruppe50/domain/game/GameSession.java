@@ -2,6 +2,7 @@ package edu.ntnu.idatt2003.gruppe50.domain.game;
 
 import edu.ntnu.idatt2003.gruppe50.domain.market.Exchange;
 import edu.ntnu.idatt2003.gruppe50.domain.portfolio.Player;
+import edu.ntnu.idatt2003.gruppe50.shared.Validate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -32,6 +33,9 @@ public final class GameSession {
   }
 
   public static GameSession createNew(Player player, Exchange exchange) {
+    Validate.notNull(player, "Player");
+    Validate.notNull(exchange, "Exchange");
+
     return new GameSession(
         UUID.randomUUID(),
         player,
@@ -50,6 +54,12 @@ public final class GameSession {
       LocalDate runStartedAt,
       LocalDate lastPlayed
   ) {
+    Validate.notNull(gameId, "Game id");
+    Validate.notNull(player, "Player");
+    Validate.notNull(exchange, "Exchange");
+    Validate.notNull(state, "Game state");
+    Validate.notNull(runStartedAt, "Run started at date");
+    Validate.notNull(lastPlayed, "Last played date");
     return new GameSession(gameId, player, exchange, state, runStartedAt, lastPlayed);
   }
 
