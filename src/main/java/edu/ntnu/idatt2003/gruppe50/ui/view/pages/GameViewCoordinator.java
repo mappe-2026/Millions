@@ -10,25 +10,18 @@ import javafx.scene.layout.BorderPane;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
-public class GameView{
+public class GameViewCoordinator {
   private final GameController gameController;
   private final PortfolioQueryController portfolioQueryController;
 
-  public GameView(GameController gameController, PortfolioQueryController portfolioQueryController) {
+  public GameViewCoordinator(GameController gameController, PortfolioQueryController portfolioQueryController) {
     this.gameController = gameController;
     this.portfolioQueryController = portfolioQueryController;
   }
 
   public Scene getScene() {
-    Map<PageId, Supplier<Page>> factories = new EnumMap<>(PageId.class);
-
-    factories.put(PageId.DASHBOARD, DashBoardView::new);
-    factories.put(PageId.PORTFOLIO, () -> new PortfolioView(portfolioQueryController, gameController));
-    // need factories for market and transactions too
-
-    NavigationManager navManager = new NavigationManager(factories);
+    NavigationManager navManager = new NavigationManager(buildPages());
     NavBar navBar = new NavBar(navManager::navigateTo);
 
     BorderPane root = new BorderPane();
@@ -38,5 +31,16 @@ public class GameView{
     navManager.navigateTo(PageId.DASHBOARD);
 
     return new Scene(root, 600, 400);
+  }
+
+  private Map<PageId, Page> buildPages() {
+    Map<PageId, Page> pages = new EnumMap<>(PageId.class);
+
+    pages.put(PageId.DASHBOARD, new DashBoardView());
+    // pages.put(PageId.MARKET, new MarketView());
+    pages.put(PageId.PORTFOLIO, new PortfolioView(portfolioQueryController, gameController));
+    // pages.put(PageId.TRANSACTIONS, new TransactionsView());
+
+    return pages;
   }
 }

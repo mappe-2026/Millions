@@ -7,7 +7,7 @@ import edu.ntnu.idatt2003.gruppe50.infrastructure.repository.InMemoryGameSession
 import edu.ntnu.idatt2003.gruppe50.ui.controller.GameController;
 import edu.ntnu.idatt2003.gruppe50.ui.controller.NewGameController;
 import edu.ntnu.idatt2003.gruppe50.ui.controller.PortfolioQueryController;
-import edu.ntnu.idatt2003.gruppe50.ui.view.pages.GameView;
+import edu.ntnu.idatt2003.gruppe50.ui.view.pages.GameViewCoordinator;
 import edu.ntnu.idatt2003.gruppe50.ui.view.pages.NewGameView;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -48,7 +48,7 @@ public class App extends Application {
     GameController gameController = new GameController(session.getGameId(), buyShare, sellShare, advanceWeek);
     PortfolioQueryController portfolioQueryController = new PortfolioQueryController(gameId, getPortfolio);
 
-    GameView gameView = new GameView(gameController, portfolioQueryController);
-    stage.setScene(gameView.getScene());
+    GameViewCoordinator gameViewCoordinator = new GameViewCoordinator(gameController, portfolioQueryController);
+    stage.setScene(gameViewCoordinator.getScene());
   }
 }
