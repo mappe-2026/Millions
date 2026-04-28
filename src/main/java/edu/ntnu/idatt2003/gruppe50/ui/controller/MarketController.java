@@ -8,23 +8,52 @@ import edu.ntnu.idatt2003.gruppe50.ui.view.navigation.NavigationManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Controller for the market screen.
+ * Handles retrieval of stocks from the exchange and user interactions
+ * such as searching and navigating to stock detail.
+ */
 public class MarketController {
   private final Exchange exchange;
   private final Player player;
 
+  /**
+   * Creates a new MarketController.
+   *
+   * @param exchange the exchange to retrieve stocks from
+   * @param player the current player
+   */
   public MarketController(Exchange exchange, Player player) {
     this.exchange = exchange;
     this.player = player;
   }
 
+  /**
+   * Searches for stocks matching the given query.
+   * Matches on both symbol and company name.
+   *
+   * @param query the search term
+   * @return a list of matching {@link Stock} objects
+   */
   public List<Stock> onSearch(String query) {
     return exchange.findStocks(query);
   }
 
+  /**
+   * Returns all stocks listed on the exchange.
+   *
+   * @return a list of all {@link Stock} objects
+   */
   public List<Stock> getStocks() {
     return new ArrayList<>(exchange.getStocks());
   }
 
+  /**
+   * Called when the user selects a stock in the market table.
+   * Navigates to the stock detail screen.
+   *
+   * @param stock the selected {@link Stock}
+   */
   public void onStockSelected(Stock stock) {
     // naviger til stock detail
   }

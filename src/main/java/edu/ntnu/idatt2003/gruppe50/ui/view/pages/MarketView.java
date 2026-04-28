@@ -98,6 +98,13 @@ public class MarketView implements Page {
     return field;
   }
 
+  /**
+   * Creates and configures the stock table with columns for symbol, company,
+   * price, absolute change and percentage change. Populates the table with
+   * stocks from the exchange and registers a click listener for navigation.
+   *
+   * @return a configured {@link TableView} populated with stocks
+   */
   private TableView<Stock> createStockTable() {
     TableView<Stock> table = new TableView<>();
 
@@ -170,6 +177,13 @@ public class MarketView implements Page {
     return col;
   }
 
+  /**
+   * Creates a table cell that displays a {@link BigDecimal} value with
+   * color coding based on its sign. Positive values are green,
+   * negative values are red, and zero is white.
+   *
+   * @return a configured {@link TableCell}
+   */
   private TableCell<Stock, BigDecimal> createColoredCell() {
     return new TableCell<>() {
       @Override
