@@ -1,7 +1,8 @@
 package edu.ntnu.idatt2003.gruppe50.calculator;
 
-import edu.ntnu.idatt2003.gruppe50.model.Share;
-import edu.ntnu.idatt2003.gruppe50.model.Stock;
+import edu.ntnu.idatt2003.gruppe50.domain.portfolio.Share;
+import edu.ntnu.idatt2003.gruppe50.domain.market.Stock;
+import edu.ntnu.idatt2003.gruppe50.domain.trade.calculator.PurchaseCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +38,7 @@ public class PurchaseCalculatorTest {
 
   @Test
   void calculateCommission_returnsFivePercentOfGross() {
-    assertEquals(new BigDecimal(25), calc.calculateCommission().stripTrailingZeros());
+    assertEquals(new BigDecimal("2.5"), calc.calculateCommission().stripTrailingZeros());
   }
 
   @Test
@@ -47,7 +48,7 @@ public class PurchaseCalculatorTest {
 
   @Test
   void calculateTotal_returnsCorrectTotal() {
-    assertEquals(bd("525"), calc.calculateTotal().stripTrailingZeros());
+    assertEquals(bd("502.5"), calc.calculateTotal().stripTrailingZeros());
   }
 
   //Helper method

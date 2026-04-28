@@ -1,9 +1,13 @@
 package edu.ntnu.idatt2003.gruppe50.model;
 
-import edu.ntnu.idatt2003.gruppe50.transaction.Purchase;
-import edu.ntnu.idatt2003.gruppe50.transaction.Sale;
-import edu.ntnu.idatt2003.gruppe50.transaction.Transaction;
-import edu.ntnu.idatt2003.gruppe50.transaction.TransactionFactory;
+import edu.ntnu.idatt2003.gruppe50.domain.market.Exchange;
+import edu.ntnu.idatt2003.gruppe50.domain.portfolio.Player;
+import edu.ntnu.idatt2003.gruppe50.domain.portfolio.Share;
+import edu.ntnu.idatt2003.gruppe50.domain.market.Stock;
+import edu.ntnu.idatt2003.gruppe50.domain.trade.Purchase;
+import edu.ntnu.idatt2003.gruppe50.domain.trade.Sale;
+import edu.ntnu.idatt2003.gruppe50.domain.trade.Transaction;
+import edu.ntnu.idatt2003.gruppe50.domain.trade.TransactionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -144,13 +148,13 @@ public class ExchangeTest {
   @Test
   void sell_nullPlayer_throwsException() {
     Share share = new Share(exchange.getStock("AAPL"), new BigDecimal("1"), new BigDecimal("100"));
-    assertThrows(IllegalArgumentException.class, () -> exchange.sell(share, null));
+    assertThrows(IllegalArgumentException.class, () -> exchange.sell(share.getShareId(), null));
   }
 
   @Test
   void sell_validSale_returnsTransaction() {
     exchange.buy("AAPL", bd(1), player);
-    Transaction t = exchange.sell(player.getPortfolio().getShares("AAPL").getFirst(), player);
+    Transaction t = exchange.sell(player.getPortfolio().getShares("AAPL").getFirst().getShareId(), player);
     assertNotNull(t);
     assertInstanceOf(Sale.class, t);
   }
