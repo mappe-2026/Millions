@@ -1,8 +1,10 @@
 package edu.ntnu.idatt2003.gruppe50.view.navigation;
 
+import edu.ntnu.idatt2003.gruppe50.controller.MarketController;
 import edu.ntnu.idatt2003.gruppe50.model.Exchange;
 import edu.ntnu.idatt2003.gruppe50.model.Player;
 import edu.ntnu.idatt2003.gruppe50.view.pages.DashBoardView;
+import edu.ntnu.idatt2003.gruppe50.view.pages.MarketView;
 import edu.ntnu.idatt2003.gruppe50.view.pages.Page;
 import edu.ntnu.idatt2003.gruppe50.view.pages.PortfolioView;
 import javafx.scene.layout.StackPane;
@@ -20,8 +22,11 @@ public class NavigationManager {
     contentArea = new StackPane();
     contentArea.getStyleClass().add("content-area");
 
+    MarketController marketController = new MarketController(exchange, player);
+
     // register the different pages
     registerPage(new DashBoardView());
+    registerPage(new MarketView(marketController));
     registerPage(new PortfolioView(player));
 
   }

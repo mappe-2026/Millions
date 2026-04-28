@@ -114,7 +114,9 @@ public class Stock {
    * @return the price change as {@link BigDecimal}
    */
   public BigDecimal getLatestPriceChange() {
-    if (prices.size() < 2) throw new IllegalStateException("Not enough prices to calculate change");
+    if (prices.size() < 2) {
+      return BigDecimal.ZERO;
+    }
     int lastIndex = prices.size() - 1;
     return prices.getLast().subtract(prices.get(lastIndex - 1));
   }
