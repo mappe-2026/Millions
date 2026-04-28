@@ -1,11 +1,12 @@
-package edu.ntnu.idatt2003.gruppe50.view.pages;
+package edu.ntnu.idatt2003.gruppe50.ui.view.pages;
 
-import edu.ntnu.idatt2003.gruppe50.controller.MarketController;
-import edu.ntnu.idatt2003.gruppe50.model.Stock;
+import edu.ntnu.idatt2003.gruppe50.domain.market.Stock;
+import edu.ntnu.idatt2003.gruppe50.ui.controller.MarketController;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -14,21 +15,57 @@ import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
 
-public class MarketView implements Page{
+/**
+ * View for the market screen, displaying all stocks listed on the exchange.
+ * Provides a searchable table where the user can browse stocks and navigate
+ * to individual stock detail pages.
+ */
+public class MarketView implements Page {
 
   private final MarketController controller;
   private final TextField searchField;
   private final TableView<Stock> table;
+  private final VBox root;
 
+  /**
+   * Creates a new MarketView and initializes all UI components.
+   *
+   * @param controller the controller handling market logic and data retrieval
+   */
   public MarketView(MarketController controller) {
     this.controller = controller;
     this.table = createStockTable();
     this.searchField = createSearchField();
+    this.root = createRoot();
   }
 
-
+  /**
+   * Returns the root node of the market screen.
+   *
+   * @return the root {@link Parent} node
+   */
   @Override
   public Parent getView() {
+    return root;
+  }
+
+  /**
+   * Returns the title of this page.
+   *
+   * @return "Market"
+   */
+  @Override
+  public String getTitle() {
+    return "Market";
+  }
+
+  /**
+   * Builds and returns the root layout of the market screen.
+   * Adds title, search field and stock table to a {@link VBox}.
+   *
+   * @return a configured {@link VBox} containing all UI components
+   */
+  private VBox createRoot() {
     Label title = new Label("Market");
     title.getStyleClass().add("market-title");
     VBox box = new VBox(10, title, searchField, table);
@@ -40,11 +77,12 @@ public class MarketView implements Page{
     return box;
   }
 
-  @Override
-  public String getTitle() {
-    return "Market";
-  }
-
+  /**
+   * Creates and configures the search field.
+   * Filters the stock table in real time based on symbol or company name.
+   *
+   * @return a configured {@link TextField}
+   */
   private TextField createSearchField() {
     TextField field = new TextField();
     field.setPromptText("Search by symbol or company...");
@@ -63,44 +101,94 @@ public class MarketView implements Page{
   private TableView<Stock> createStockTable() {
     TableView<Stock> table = new TableView<>();
 
-    TableColumn<Stock, String> symbolCol = new TableColumn<>("Symbol");
-    symbolCol.setCellValueFactory(data ->
-        new SimpleStringProperty(data.getValue().getSymbol())
+    table.getColumns().addAll(
+        createSymbolColumn(),
+        createCompanyColumn(),
+        createPriceColumn(),
+        createChangeColumn(),
+        createPercentChangeColumn()
     );
-
-    TableColumn<Stock, String> companyCol = new TableColumn<>("Company");
-    companyCol.setCellValueFactory(data ->
-        new SimpleStringProperty(data.getValue().getCompany())
-    );
-
-    TableColumn<Stock, BigDecimal> priceCol = new TableColumn<>("Price");
-    priceCol.setCellValueFactory(data ->
-        new SimpleObjectProperty<>(data.getValue().getSalesPrice())
-    );
-
-    TableColumn<Stock, BigDecimal> changeCol = new TableColumn<>("Change");
-    changeCol.setCellValueFactory(data ->
-        new SimpleObjectProperty<>(data.getValue().getLatestPriceChange())
-    );
-
-    table.getColumns().addAll(symbolCol, companyCol, priceCol, changeCol);
 
     table.getItems().addAll(controller.getStocks());
-
-    symbolCol.setStyle("-fx-alignment: CENTER;");
-    companyCol.setStyle("-fx-alignment: CENTER;");
-    priceCol.setStyle("-fx-alignment: CENTER;");
-    changeCol.setStyle("-fx-alignment: CENTER;");
-
-    symbolCol.setMaxWidth(1f * Integer.MAX_VALUE * 20);   // 20%
-    companyCol.setMaxWidth(1f * Integer.MAX_VALUE * 40);  // 40%
-    priceCol.setMaxWidth(1f * Integer.MAX_VALUE * 20);    // 20%
-    changeCol.setMaxWidth(1f * Integer.MAX_VALUE * 20);   // 20%
     table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
     table.setMaxWidth(Double.MAX_VALUE);
     table.setMaxHeight(Double.MAX_VALUE);
+    table.setOnMouseClicked(event -> {
+      Stock selected = table.getSelectionModel().getSelectedItem();
+      if (selected != null) {
+        controller.onStockSelected(selected);
+      }
+    });
+
     return table;
   }
 
+  private TableColumn<Stock, String> createSymbolColumn() {
+    TableColumn<Stock, String> col = new TableColumn<>("Symbol");
+    col.setCellValueFactory(data ->
+        new SimpleStringProperty(data.getValue().getSymbol())
+    );
+    col.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+    return col;
+  }
+
+  private TableColumn<Stock, String> createCompanyColumn() {
+    TableColumn<Stock, String> col = new TableColumn<>("Company");
+    col.setCellValueFactory(data ->
+        new SimpleStringProperty(data.getValue().getCompany())
+    );
+    col.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+    return col;
+  }
+
+  private TableColumn<Stock, BigDecimal> createPriceColumn() {
+    TableColumn<Stock, BigDecimal> col = new TableColumn<>("Price");
+    col.setCellValueFactory(data ->
+        new SimpleObjectProperty<>(data.getValue().getSalesPrice())
+    );
+    col.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+    return col;
+  }
+
+  private TableColumn<Stock, BigDecimal> createChangeColumn() {
+    TableColumn<Stock, BigDecimal> col = new TableColumn<>("+/- (kr)");
+    col.setCellValueFactory(data ->
+        new SimpleObjectProperty<>(data.getValue().getLatestPriceChange())
+    );
+    col.setCellFactory(c -> createColoredCell());
+    col.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+    return col;
+  }
+
+  private TableColumn<Stock, BigDecimal> createPercentChangeColumn() {
+    TableColumn<Stock, BigDecimal> col = new TableColumn<>("+/- (%)");
+    col.setCellValueFactory(data ->
+        new SimpleObjectProperty<>(data.getValue().getLatestPriceChangePercent())
+    );
+    col.setCellFactory(c -> createColoredCell());
+    col.setMaxWidth(1f * Integer.MAX_VALUE * 20);
+    return col;
+  }
+
+  private TableCell<Stock, BigDecimal> createColoredCell() {
+    return new TableCell<>() {
+      @Override
+      protected void updateItem(BigDecimal value, boolean empty) {
+        super.updateItem(value, empty);
+        if (empty || value == null) {
+          setText(null);
+          setStyle("");
+        } else {
+          setText(value.toString());
+          if (value.compareTo(BigDecimal.ZERO) > 0) {
+            setStyle("-fx-text-fill: #4CAF50;");
+          } else if (value.compareTo(BigDecimal.ZERO) < 0) {
+            setStyle("-fx-text-fill: #EF5350;");
+          } else {
+            setStyle("-fx-text-fill: #E0E0E0;");
+          }
+        }
+      }
+    };
+  }
 }

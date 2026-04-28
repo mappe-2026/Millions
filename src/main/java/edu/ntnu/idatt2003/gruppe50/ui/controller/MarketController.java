@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.gruppe50.ui.controller;
 import edu.ntnu.idatt2003.gruppe50.domain.market.Exchange;
 import edu.ntnu.idatt2003.gruppe50.domain.portfolio.Player;
 import edu.ntnu.idatt2003.gruppe50.domain.market.Stock;
+import edu.ntnu.idatt2003.gruppe50.ui.view.navigation.NavigationManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,5 +23,9 @@ public class MarketController {
 
   public List<Stock> getStocks() {
     return new ArrayList<>(exchange.getStocks());
+  }
+
+  public void onStockSelected(Stock stock) {
+    // naviger til stock detail
   }
 }

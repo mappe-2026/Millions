@@ -49,12 +49,11 @@
     -fx-background-color: #1C1C1C;
 }
 
-/* Hvit tekst i rader */
+
 .table-view .table-cell {
     -fx-text-fill: #E0E0E0;
 }
 
-/* Mer kontrast — annenhver rad */
 .table-view .table-row-cell:even {
     -fx-background-color: #242424;
 }
@@ -66,9 +65,11 @@
 
 .table-view .table-cell {
     -fx-border-color: transparent;
-}css.table-view .column-header-background {
+}
+
+css.table-view .column-header-background {
      -fx-background-color: #1C1C1C;
- }
+}
 
 css.table-view .column-header-background {
     -fx-background-color: #1C1C1C;
@@ -113,7 +114,6 @@ css.table-view .column-header-background {
 
 .scroll-bar:vertical {
     -fx-opacity: 0;
-    -fx-transition: opacity 0.2s;
 }
 
 .table-view:hover .scroll-bar:vertical {
@@ -126,4 +126,8 @@ css.table-view .column-header-background {
 
 .scroll-bar:vertical:hover {
     -fx-opacity: 1;
+}
+
+.table-view .table-cell {
+    -fx-alignment: center;
 }

@@ -3,6 +3,7 @@ package edu.ntnu.idatt2003.gruppe50.domain.market;
 import edu.ntnu.idatt2003.gruppe50.shared.Validate;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,5 +122,21 @@ public class Stock {
     return prices.getLast().subtract(prices.get(lastIndex - 1));
   }
 
+  /**
+   * Calculates the percentage price change between the two most recent prices.
+   * Returns zero if fewer than two prices have been recorded.
+   *
+   * @return the percentage price change as a {@link BigDecimal} with two decimal places
+   */
+
+  public BigDecimal getLatestPriceChangePercent() {
+    if (prices.size() < 2) {
+      return BigDecimal.ZERO;
+    }
+    BigDecimal previousPrice = prices.get(prices.size() - 2);
+    BigDecimal change = getLatestPriceChange();
+    BigDecimal percent = change.divide(previousPrice, 2, RoundingMode.HALF_UP);
+    return percent.multiply(new BigDecimal("100"));
+  }
 
 }

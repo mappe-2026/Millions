@@ -2,9 +2,11 @@ package edu.ntnu.idatt2003.gruppe50;
 
 import edu.ntnu.idatt2003.gruppe50.application.*;
 import edu.ntnu.idatt2003.gruppe50.domain.game.GameSession;
+import edu.ntnu.idatt2003.gruppe50.domain.market.Exchange;
 import edu.ntnu.idatt2003.gruppe50.domain.repository.GameSessionRepository;
 import edu.ntnu.idatt2003.gruppe50.infrastructure.repository.InMemoryGameSessionRepository;
 import edu.ntnu.idatt2003.gruppe50.ui.controller.GameController;
+import edu.ntnu.idatt2003.gruppe50.ui.controller.MarketController;
 import edu.ntnu.idatt2003.gruppe50.ui.controller.NewGameController;
 import edu.ntnu.idatt2003.gruppe50.ui.controller.PortfolioQueryController;
 import edu.ntnu.idatt2003.gruppe50.ui.view.pages.GameViewCoordinator;
@@ -47,8 +49,9 @@ public class App extends Application {
     GameSession session = sessions.findById(gameId).orElseThrow(GameSessionNotFoundException::new);
     GameController gameController = new GameController(session.getGameId(), buyShare, sellShare, advanceWeek);
     PortfolioQueryController portfolioQueryController = new PortfolioQueryController(gameId, getPortfolio);
+    MarketController marketController = new MarketController(session.getExchange(), session.getPlayer());
 
-    GameViewCoordinator gameViewCoordinator = new GameViewCoordinator(gameController, portfolioQueryController);
+    GameViewCoordinator gameViewCoordinator = new GameViewCoordinator(gameController, portfolioQueryController, marketController);
     stage.setScene(gameViewCoordinator.getScene());
   }
 }
