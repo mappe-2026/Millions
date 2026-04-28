@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
@@ -29,7 +30,13 @@ public class MarketView implements Page{
   @Override
   public Parent getView() {
     Label title = new Label("Market");
+    title.getStyleClass().add("market-title");
     VBox box = new VBox(10, title, searchField, table);
+    VBox.setVgrow(table, Priority.ALWAYS);
+    box.getStylesheets().add(
+        getClass().getResource("/css/market.css").toExternalForm()
+    );
+    box.getStyleClass().add("market-root");
     return box;
   }
 
@@ -43,9 +50,13 @@ public class MarketView implements Page{
     field.setPromptText("Search by symbol or company...");
 
     field.textProperty().addListener((obs, oldVal, newVal) -> {
-      table.getItems().setAll(controller.onSearch(newVal));
+      if (newVal == null || newVal.isBlank()) {
+        table.getItems().setAll(controller.getStocks());
+      } else {
+        table.getItems().setAll(controller.onSearch(newVal));
+      }
     });
-
+    field.setMaxWidth(Double.MAX_VALUE);
     return field;
   }
 
@@ -75,6 +86,20 @@ public class MarketView implements Page{
     table.getColumns().addAll(symbolCol, companyCol, priceCol, changeCol);
 
     table.getItems().addAll(controller.getStocks());
+
+    symbolCol.setStyle("-fx-alignment: CENTER;");
+    companyCol.setStyle("-fx-alignment: CENTER;");
+    priceCol.setStyle("-fx-alignment: CENTER;");
+    changeCol.setStyle("-fx-alignment: CENTER;");
+
+    symbolCol.setMaxWidth(1f * Integer.MAX_VALUE * 20);   // 20%
+    companyCol.setMaxWidth(1f * Integer.MAX_VALUE * 40);  // 40%
+    priceCol.setMaxWidth(1f * Integer.MAX_VALUE * 20);    // 20%
+    changeCol.setMaxWidth(1f * Integer.MAX_VALUE * 20);   // 20%
+    table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+    table.setMaxWidth(Double.MAX_VALUE);
+    table.setMaxHeight(Double.MAX_VALUE);
     return table;
   }
 
