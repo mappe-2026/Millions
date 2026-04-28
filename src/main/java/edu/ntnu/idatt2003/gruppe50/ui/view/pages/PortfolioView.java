@@ -5,7 +5,7 @@ import edu.ntnu.idatt2003.gruppe50.ui.controller.GameController;
 import edu.ntnu.idatt2003.gruppe50.ui.controller.PortfolioQueryController;
 import edu.ntnu.idatt2003.gruppe50.ui.model.PortfolioData;
 import edu.ntnu.idatt2003.gruppe50.ui.model.ShareData;
-import edu.ntnu.idatt2003.gruppe50.ui.view.components.LineChartView;
+import edu.ntnu.idatt2003.gruppe50.ui.view.components.AreaChartView;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.Parent;
@@ -78,7 +78,7 @@ public class PortfolioView extends VBox implements Page {
 
   private AreaChart<Number,Number> createNetWorthChart(PortfolioData portfolio) {
     // Add temporary net worth line chart
-    LineChartView netWorthChart = new LineChartView("Week", "Net Worth");
+    AreaChartView netWorthChart = new AreaChartView("Week", "Net Worth");
     List<BigDecimal> history = List.of(BigDecimal.ONE, BigDecimal.TWO, BigDecimal.TEN);
     netWorthChart.display("Net Worth Chart", history);
     return netWorthChart.getChart();

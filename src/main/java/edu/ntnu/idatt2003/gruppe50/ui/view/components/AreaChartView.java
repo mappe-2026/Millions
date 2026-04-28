@@ -7,11 +7,11 @@ import javafx.scene.chart.XYChart;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class LineChartView {
+public class AreaChartView {
   private final AreaChart<Number, Number> chart;
   private final XYChart.Series<Number, Number> series;
 
-  public LineChartView(String xLabel, String yLabel){
+  public AreaChartView(String xLabel, String yLabel){
     NumberAxis xAxis = new NumberAxis();
     NumberAxis yAxis = new NumberAxis();
 
