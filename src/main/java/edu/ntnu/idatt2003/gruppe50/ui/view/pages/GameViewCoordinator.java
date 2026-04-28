@@ -1,0 +1,46 @@
+package edu.ntnu.idatt2003.gruppe50.ui.view.pages;
+
+import edu.ntnu.idatt2003.gruppe50.ui.controller.GameController;
+import edu.ntnu.idatt2003.gruppe50.ui.controller.PortfolioQueryController;
+import edu.ntnu.idatt2003.gruppe50.ui.view.components.NavBar;
+import edu.ntnu.idatt2003.gruppe50.ui.view.navigation.NavigationManager;
+import edu.ntnu.idatt2003.gruppe50.ui.view.navigation.PageId;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+
+import java.util.EnumMap;
+import java.util.Map;
+
+public class GameViewCoordinator {
+  private final GameController gameController;
+  private final PortfolioQueryController portfolioQueryController;
+
+  public GameViewCoordinator(GameController gameController, PortfolioQueryController portfolioQueryController) {
+    this.gameController = gameController;
+    this.portfolioQueryController = portfolioQueryController;
+  }
+
+  public Scene getScene() {
+    NavigationManager navManager = new NavigationManager(buildPages());
+    NavBar navBar = new NavBar(navManager::navigateTo);
+
+    BorderPane root = new BorderPane();
+    root.setTop(navBar);
+    root.setCenter(navManager.getContentArea());
+
+    navManager.navigateTo(PageId.DASHBOARD);
+
+    return new Scene(root, 600, 400);
+  }
+
+  private Map<PageId, Page> buildPages() {
+    Map<PageId, Page> pages = new EnumMap<>(PageId.class);
+
+    pages.put(PageId.DASHBOARD, new DashBoardView());
+    // pages.put(PageId.MARKET, new MarketView());
+    pages.put(PageId.PORTFOLIO, new PortfolioView(portfolioQueryController, gameController));
+    // pages.put(PageId.TRANSACTIONS, new TransactionsView());
+
+    return pages;
+  }
+}
