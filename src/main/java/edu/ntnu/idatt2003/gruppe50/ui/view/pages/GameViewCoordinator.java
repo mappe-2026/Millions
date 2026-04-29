@@ -1,6 +1,7 @@
 package edu.ntnu.idatt2003.gruppe50.ui.view.pages;
 
 import edu.ntnu.idatt2003.gruppe50.ui.controller.GameController;
+import edu.ntnu.idatt2003.gruppe50.ui.controller.MarketController;
 import edu.ntnu.idatt2003.gruppe50.ui.controller.PortfolioQueryController;
 import edu.ntnu.idatt2003.gruppe50.ui.view.components.NavBar;
 import edu.ntnu.idatt2003.gruppe50.ui.view.navigation.NavigationManager;
@@ -14,10 +15,13 @@ import java.util.Map;
 public class GameViewCoordinator {
   private final GameController gameController;
   private final PortfolioQueryController portfolioQueryController;
+  private final MarketController marketController;
 
-  public GameViewCoordinator(GameController gameController, PortfolioQueryController portfolioQueryController) {
+  public GameViewCoordinator(GameController gameController, PortfolioQueryController portfolioQueryController, MarketController
+                              marketController) {
     this.gameController = gameController;
     this.portfolioQueryController = portfolioQueryController;
+    this.marketController = marketController;
   }
 
   public Scene getScene() {
@@ -37,7 +41,7 @@ public class GameViewCoordinator {
     Map<PageId, Page> pages = new EnumMap<>(PageId.class);
 
     pages.put(PageId.DASHBOARD, new DashBoardView());
-    // pages.put(PageId.MARKET, new MarketView());
+    pages.put(PageId.MARKET, new MarketView(marketController));
     pages.put(PageId.PORTFOLIO, new PortfolioView(portfolioQueryController, gameController));
     // pages.put(PageId.TRANSACTIONS, new TransactionsView());
 
