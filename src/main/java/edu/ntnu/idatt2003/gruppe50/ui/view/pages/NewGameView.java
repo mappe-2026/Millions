@@ -41,6 +41,7 @@ public class NewGameView {
   public NewGameView(Stage stage, NewGameController controller) {
     this.stage = stage;
     this.controller = controller;
+    loadDefaultFile();
   }
 
   /**
@@ -136,7 +137,8 @@ public class NewGameView {
     Label fieldLabel = new Label("Stock data file");
     fieldLabel.getStyleClass().add("field-label");
 
-    Label fileNameLabel = new Label("Choose .csv file");
+    String defaultName = selectedFile != null ? selectedFile.getName() : "Choose .csv file";
+    Label fileNameLabel = new Label(defaultName);
     fileNameLabel.getStyleClass().add("file-name-label");
 
     Region spacer = new Region();
@@ -243,4 +245,10 @@ public class NewGameView {
     }
   }
 
+  private void loadDefaultFile() {
+    var resource = getClass().getResource("/data/sp500.csv");
+    if (resource != null) {
+      selectedFile = new File(resource.getFile());
+    }
+  }
 }
