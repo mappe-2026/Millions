@@ -34,6 +34,6 @@ public final class PortfolioQueryController {
             s.currentShareValue()
         )).toList();
 
-    return new PortfolioData(response.cash(), response.portfolioValue(), response.netWorth(), shares);
+    return new PortfolioData(response.cash(), response.portfolioValue(), response.netWorth(), shares, List.of());
   }
 }

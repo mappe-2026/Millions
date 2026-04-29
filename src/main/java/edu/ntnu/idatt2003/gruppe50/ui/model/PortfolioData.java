@@ -7,5 +7,6 @@ public record PortfolioData(
     BigDecimal cash,
     BigDecimal portfolioValue,
     BigDecimal netWorth,
-    List<ShareData> shares
+    List<ShareData> shares,
+    List<BigDecimal> netWorthHistory
 ) {}
