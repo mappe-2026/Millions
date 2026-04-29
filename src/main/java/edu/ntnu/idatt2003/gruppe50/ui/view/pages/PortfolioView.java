@@ -28,17 +28,21 @@ public class PortfolioView extends VBox implements Page {
     PortfolioData portfolio = queryController.getPortfolio();
 
     // ─── Lag komponenter ─────────────────────────────────
+    Label title = new Label("Portfolio");
     VBox cardContainer = createCardContainer(portfolio);
     AreaChart<Number,Number> chart = createNetWorthChart(portfolio);
+    Label holdingsTitle = new Label("My holdings");
     TableView<ShareData> table = createHoldingsTable(portfolio.shares());
 
     // ─── Bygg layout ─────────────────────────────────────
-    HBox topSection = new HBox(cardContainer, chart);
+    HBox topSection = new HBox(16, cardContainer, chart);
     HBox.setHgrow(chart, Priority.ALWAYS);
 
     // ─── Style og CSS ────────────────────────────────────
+    title.getStyleClass().add("page-title");
+    holdingsTitle.getStyleClass().add("section-title");
     this.getStyleClass().add("portfolio-view");
-    this.getChildren().addAll(topSection, table);
+    this.getChildren().addAll(title, topSection, holdingsTitle, table);
     this.getStylesheets().add(getClass().getResource("/css/portfolio.css").toExternalForm());
   }
 
@@ -63,6 +67,10 @@ public class PortfolioView extends VBox implements Page {
     VBox portfolioValueCard = new VBox(new Label("Portfolio value:"), portfolioValueLabel);
     VBox cashBalanceCard = new VBox(new Label("Cash balance:"), playerCashLabel);
 
+    VBox.setVgrow(portfolioValueCard, Priority.ALWAYS);
+    VBox.setVgrow(cashBalanceCard, Priority.ALWAYS);
+    VBox.setVgrow(netWorthCard, Priority.ALWAYS);
+
     // Style
     portfolioValueCard.getStyleClass().add("info-card");
     cashBalanceCard.getStyleClass().add("info-card");
@@ -70,7 +78,10 @@ public class PortfolioView extends VBox implements Page {
     netWorthLabel.getStyleClass().add("net-worth-value");
 
     VBox container = new VBox(portfolioValueCard, cashBalanceCard, netWorthCard);
+    HBox.setHgrow(container, Priority.NEVER);
     container.getStyleClass().add("card-container");
+    container.setMinWidth(200);
+    container.setPrefWidth(200);
 
     return container;
   }
@@ -81,6 +92,7 @@ public class PortfolioView extends VBox implements Page {
     AreaChartView netWorthChart = new AreaChartView("Week", "Net Worth");
     List<BigDecimal> history = List.of(BigDecimal.ONE, BigDecimal.TWO, BigDecimal.TEN);
     netWorthChart.display("Net Worth Chart", history);
+    netWorthChart.getChart().setLegendVisible(false);
     return netWorthChart.getChart();
 
     //ACTUAL LOGIC
@@ -91,6 +103,7 @@ public class PortfolioView extends VBox implements Page {
 
   private TableView<ShareData> createHoldingsTable(List<ShareData> shares) {
     TableView<ShareData> table = new TableView<>();
+    table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     table.getColumns().addAll(
         createColumn("Symbol", ShareData::symbol),
         createColumn("Company", ShareData::stock),
