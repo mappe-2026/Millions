@@ -4,6 +4,12 @@
     -fx-spacing: 10;
 }
 
+.market-title {
+    -fx-text-fill: #E0E0E0;
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+}
+
 .text-field {
     -fx-background-color: #242424;
     -fx-border-color: #333333;
@@ -15,15 +21,17 @@
     -fx-padding: 12 16;
 }
 
-.market-title {
-    -fx-text-fill: #E0E0E0;
-    -fx-font-size: 24;
-    -fx-font-weight: bold;
-}
-
 .table-view {
     -fx-background-color: #242424;
     -fx-border-color: #2A2A2A;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #1C1C1C;
+}
+
+.table-view .column-header-background .filler {
+    -fx-background-color: #1C1C1C;
 }
 
 .table-view .column-header {
@@ -35,23 +43,10 @@
     -fx-font-size: 11;
 }
 
+
 .table-view .table-row-cell {
     -fx-background-color: #242424;
     -fx-border-color: #222222;
-    -fx-text-fill: #CCCCCC;
-}
-
-.table-view .table-row-cell:hover {
-    -fx-background-color: #2C2C2C;
-}
-
-.table-view .column-header-background .filler {
-    -fx-background-color: #1C1C1C;
-}
-
-
-.table-view .table-cell {
-    -fx-text-fill: #E0E0E0;
 }
 
 .table-view .table-row-cell:even {
@@ -62,22 +57,9 @@
     -fx-background-color: #2A2A2A;
 }
 
-
-.table-view .table-cell {
-    -fx-border-color: transparent;
-}
-
-css.table-view .column-header-background {
-     -fx-background-color: #1C1C1C;
-}
-
-css.table-view .column-header-background {
+.table-view .table-row-cell:empty {
     -fx-background-color: #1C1C1C;
-}
-
-.table-view .table-cell {
-    -fx-font-size: 14;
-    -fx-padding: 10 16;
+    -fx-border-color: transparent;
 }
 
 .table-view .table-row-cell:filled:hover {
@@ -89,10 +71,15 @@ css.table-view .column-header-background {
     -fx-background-color: #2A2A2A;
 }
 
-.table-view .table-row-cell:empty {
-    -fx-background-color: #1C1C1C;
+
+.table-view .table-cell {
+    -fx-text-fill: #E0E0E0;
     -fx-border-color: transparent;
+    -fx-font-size: 14;
+    -fx-padding: 10 16;
+    -fx-alignment: center;
 }
+
 
 .scroll-bar {
     -fx-background-color: #1C1C1C;
@@ -116,18 +103,6 @@ css.table-view .column-header-background {
     -fx-opacity: 0;
 }
 
-.table-view:hover .scroll-bar:vertical {
-    -fx-opacity: 1;
-}
-
-.scroll-bar:vertical {
-    -fx-opacity: 0;
-}
-
 .scroll-bar:vertical:hover {
     -fx-opacity: 1;
-}
-
-.table-view .table-cell {
-    -fx-alignment: center;
 }
