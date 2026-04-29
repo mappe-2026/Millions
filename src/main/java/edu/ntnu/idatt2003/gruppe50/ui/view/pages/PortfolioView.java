@@ -103,6 +103,7 @@ public class PortfolioView extends VBox implements Page {
 
   private TableView<ShareData> createHoldingsTable(List<ShareData> shares) {
     TableView<ShareData> table = new TableView<>();
+    table.setPlaceholder(new Label("You don't own any shares yet. Go to the Market to buy!"));
     table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     table.getColumns().addAll(
         createColumn("Symbol", ShareData::symbol),
