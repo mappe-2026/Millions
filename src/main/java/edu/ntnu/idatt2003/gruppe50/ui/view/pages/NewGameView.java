@@ -137,7 +137,7 @@ public class NewGameView {
     Label fieldLabel = new Label("Stock data file");
     fieldLabel.getStyleClass().add("field-label");
 
-    String defaultName = selectedFile != null ? selectedFile.getName() : "Choose .csv file";
+    String defaultName = selectedFile != null ? "stocks.csv" : "Choose .csv file";
     Label fileNameLabel = new Label(defaultName);
     fileNameLabel.getStyleClass().add("file-name-label");
 
@@ -246,9 +246,17 @@ public class NewGameView {
   }
 
   private void loadDefaultFile() {
-    var resource = getClass().getResource("/data/sp500.csv");
-    if (resource != null) {
-      selectedFile = new File(resource.getFile());
+    try (var inputStream = getClass().getResourceAsStream("/data/sp500.csv")) {
+      if (inputStream == null) {
+        return;
+      }
+      File tempFile = File.createTempFile("stocks", ".csv");
+      tempFile.deleteOnExit();
+      java.nio.file.Files.copy(inputStream, tempFile.toPath(),
+          java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+      selectedFile = tempFile;
+    } catch (Exception e) {
+      selectedFile = null;
     }
   }
 }
